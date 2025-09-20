@@ -608,11 +608,11 @@ export default function Docs() {
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Registry?</h3>
                     <p className="text-muted-foreground mb-4">
-                      With the rapid proliferation of AI and Agentic applications, a typical enterprise may have a number of internally developed agentic applications and agents procured from external vendors hosted internally or in the cloud. An enterprise customer may have functions that span more than one agent and need a service to lookup and leverage the available agents for completing a task.
+                      With the rapid growth of AI and agentic applications, enterprises often manage a mix of internally developed agents and externally procured ones, hosted either on-premises or in the cloud. Many business processes span multiple agents, creating the need for a service that can discover, organize, and leverage these agents to complete tasks.
                       
-                      Similarly, vendors may also provide a number of agents as part of their offerings similar to how public APIs are documented today. The vendors of agents may need to provide a list of available agents for consumption to their customers. These agents could be publicly accessible or granted by entitlements to their customers.
+                      Similarly, vendors may offer collections of agents, much like public APIs are published and documented today, requiring a way to present their available agents for customer use. These agents may be openly accessible or gated by entitlements.
                       
-                      This A2A registry is a service that could be deployed to enterprise environments or publicly accessible endpoints that can help with agent discovery and entitlements.
+                      The A2A Registry provides this capability: a service deployable within enterprise environments or as a public endpoint, enabling agent discovery, entitlement management, and streamlined integration.
                     </p>
                   </div>
                 </div>
