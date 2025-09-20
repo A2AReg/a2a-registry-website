@@ -55,7 +55,7 @@ export default function Hero() {
           
           {/* Subtitle */}
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle" itemProp="description">
-            Publish, discover, and integrate intelligent agents across LangChain, OpenAI, Hugging Face, and enterprise frameworks. Semantic search, OAuth 2.0 security, and cross-registry federation for seamless agent-to-agent collaboration.
+            Enable agents from diverse frameworks and companies, running on different servers (AWS, GCP, etc.), to communicate and collaborate seamlessly.
           </p>
           
           {/* CTA buttons */}
