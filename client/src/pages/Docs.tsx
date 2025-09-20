@@ -609,9 +609,18 @@ export default function Docs() {
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Registry?</h3>
                     <p className="text-muted-foreground mb-4">
-                      A2A Publisher is a Python-based command-line tool and API that allows developers to publish their AI agents 
-                      to the A2A Registry. It handles agent packaging, validation, and deployment using A2A Cards to make your agents 
-                      discoverable across different frameworks and platforms.
+                      With the rapid proliferation of AI and Agentic applications, a typical enterprise may have a number of internally developed agentic applications and agents procured from external vendors hosted internally or in the cloud. An enterprise customer may have functions that span more than one agent and need a service to lookup and leverage the available agents for completing a task.
+                      
+                      Similarly, vendors may also provide a number of agents as part of their offerings similar to how public APIs are documented today. The vendors of agents may need to provide a list of available agents for consumption to their customers. These agents could be publicly accessible or granted by entitlements to their customers.
+                      
+                      This A2A registry is a service that could be deployed to enterprise environments or publicly accessible endpoints that can help with agent discovery and entitlements.
+                      
+                      The following are the key terms used in this document:
+                      
+                      Agents: Agentic applications running within an enterprise or hosted externally.
+                      Agent Card: A JSON document published by an agent describing its capabilities, protocols and authentication mechanisms.
+                      Client: A client is an application, service or an agent that can consume Agents
+                      Agent Entitlement: A permission granted to a client to enable fetching available agents for its use.
                     </p>
                   </div>
                 </div>
