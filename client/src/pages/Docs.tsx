@@ -912,7 +912,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Force Update</h3>
                     <p className="text-muted-foreground mb-2">Overwrite existing agent version:</p>
                     <CodeBlock title="Force Update" language="bash">
-                      a2a-reg publish --force ./a2a-card.json
+                      a2a-reg-sdk publish --force ./a2a-card.json
                     </CodeBlock>
                   </div>
                 </div>
