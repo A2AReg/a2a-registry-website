@@ -696,7 +696,7 @@ export default function Docs() {
                   Install globally using pip for easy access from any directory.
                 </p>
                 <CodeBlock title="Install via pip" language="bash">
-                  pip install a2a-publisher
+                  pip install a2a-reg-sdk
                 </CodeBlock>
               </Card>
 
