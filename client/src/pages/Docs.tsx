@@ -29,7 +29,6 @@ const navigationItems = [
   { id: "publishing", label: "Publishing Agents", icon: Play },
   { id: "python-sdk", label: "Python SDK", icon: Code },
   { id: "api-reference", label: "API Reference", icon: Code },
-  { id: "examples", label: "Examples", icon: FileText },
   { id: "security", label: "Security", icon: Shield },
   { id: "troubleshooting", label: "Troubleshooting", icon: Zap }
 ];
@@ -1145,109 +1144,6 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
           </div>
         );
 
-      case "examples":
-        return (
-          <div className="space-y-8">
-            <div>
-              <h1 className="text-4xl font-bold text-foreground mb-4">Examples</h1>
-              <p className="text-lg text-muted-foreground mb-6">
-                Real-world examples of agent configurations and publishing workflows.
-              </p>
-            </div>
-
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Python LangChain Agent</h2>
-              <p className="text-muted-foreground mb-4">
-                A complete example of a Python-based agent using the LangChain framework.
-              </p>
-              <CodeBlock title="agent.py" language="python">
-                {codeExamples.pythonAgent}
-              </CodeBlock>
-            </Card>
-
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">TypeScript Agent</h2>
-              <p className="text-muted-foreground mb-4">
-                Example A2A Card configuration for a TypeScript-based agent.
-              </p>
-              <CodeBlock title="a2a-card.json (TypeScript)" language="json">
-{`{
-  "name": "typescript-assistant",
-  "version": "1.2.0",
-  "description": "A TypeScript-based AI assistant for code analysis",
-  "author": "Development Team <dev@company.com>",
-  "framework": "custom",
-  "runtime": "node",
-  "entry_point": "dist/index.js",
-  "tags": ["typescript", "code-analysis", "assistant"],
-  "capabilities": [
-    "code-review",
-    "documentation-generation",
-    "refactoring-suggestions"
-  ],
-  "dependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "openai": "^4.0.0"
-  },
-  "resources": {
-    "memory": "1Gi",
-    "cpu": "1000m"
-  },
-  "environment": {
-    "NODE_ENV": "production",
-    "LOG_LEVEL": "info"
-  }
-}`}
-              </CodeBlock>
-            </Card>
-
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Multi-Framework Agent</h2>
-              <p className="text-muted-foreground mb-4">
-                A2A Card configuration for an agent that supports multiple AI frameworks.
-              </p>
-              <CodeBlock title="a2a-card.json (Multi-Framework)" language="json">
-{`{
-  "name": "multi-framework-agent",
-  "version": "2.0.0",
-  "description": "Universal agent supporting multiple AI frameworks",
-  "author": "AI Research Team <research@company.com>",
-  "framework": "hybrid",
-  "runtime": "python",
-  "entry_point": "src/main.py",
-  "tags": ["multi-framework", "universal", "enterprise"],
-  "capabilities": [
-    "framework-detection",
-    "model-switching",
-    "performance-optimization"
-  ],
-  "supported_frameworks": [
-    "langchain",
-    "autogen",
-    "crewai",
-    "custom"
-  ],
-  "dependencies": {
-    "langchain": "^0.1.0",
-    "autogen": "^0.2.0",
-    "crewai": "^0.1.0"
-  },
-  "resources": {
-    "memory": "2Gi",
-    "cpu": "2000m",
-    "gpu": "1"
-  },
-  "scaling": {
-    "min_instances": 1,
-    "max_instances": 10,
-    "target_cpu": "70%"
-  }
-}`}
-              </CodeBlock>
-            </Card>
-          </div>
-        );
 
       case "security":
         return (
