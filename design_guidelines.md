@@ -1,16 +1,16 @@
 # A2A Registry Landing Page Design Guidelines
 
 ## Design Approach
-**Reference-Based Approach**: Drawing inspiration from enterprise developer tools like GitHub, Stripe, and Linear for professional, technical aesthetics while maintaining accessibility and trust.
+**Reference-Based Approach**: Following the professional aesthetic of a2astudio.com - clean, modern AI/developer platform design with enterprise-grade sophistication and professional color scheme.
 
 ## Core Design Elements
 
-### A. Color Palette
-- **Primary Brand**: 220 85% 25% (deep blue) - professional, trustworthy
-- **Secondary**: 220 20% 95% (light blue-gray) for backgrounds
-- **Accent**: 142 76% 36% (emerald green) for success states, CTAs
-- **Text**: 220 15% 20% (dark blue-gray) for primary text
-- **Background**: Pure white with subtle 220 20% 98% sections
+### A. Color Palette (Based on a2astudio.com)
+- **Primary Brand**: 220 90% 16% (deep professional blue) - sophisticated, trustworthy
+- **Secondary**: 220 15% 93% (cool light gray) for subtle backgrounds
+- **Accent**: 220 100% 55% (vibrant blue) for CTAs and interactive elements
+- **Text**: 220 25% 12% (deep charcoal) for primary text
+- **Background**: Pure white with subtle 220 10% 97% sections
 
 ### B. Typography
 - **Primary Font**: Inter (Google Fonts) - modern, readable
