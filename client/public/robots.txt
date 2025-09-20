@@ -30,7 +30,7 @@ Disallow: /config/
 Disallow: /tmp/
 
 # Sitemap location
-Sitemap: https://registry.a2areg.com/sitemap.xml
+Sitemap: https://a2areg.com/sitemap.xml
 
 # Cache friendly for crawlers
 Crawl-delay: 1
