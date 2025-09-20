@@ -595,7 +595,7 @@ export default function Docs() {
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-4">Getting Started</h1>
               <p className="text-lg text-muted-foreground mb-6">
-                Welcome to the A2A Publisher documentation. This tool enables you to publish AI agents to the A2A Registry 
+                Welcome to the A2A Registry documentation. This tool enables you to publish AI agents to the A2A Registry 
                 for cross-platform discovery and collaboration.
               </p>
             </div>
