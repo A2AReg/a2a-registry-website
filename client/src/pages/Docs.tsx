@@ -662,7 +662,7 @@ export default function Docs() {
               <h2 className="text-2xl font-bold text-foreground mb-4">Quick Start</h2>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">1. Install the Publisher</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">1. Install the A2A Registry SDK</h3>
                   <CodeBlock title="Install A2A Publisher" language="bash">
                     {codeExamples.installation}
                   </CodeBlock>
