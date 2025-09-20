@@ -66,7 +66,7 @@ export default function Features() {
         {/* Header */}
         <header className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold text-foreground" data-testid="text-features-title" itemProp="headline">
-            A2A Registry Core Features - AI Agent Discovery & Management
+            A2A Registry Core Features
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-features-subtitle" itemProp="description">
             Complete enterprise AI agent platform with semantic search, OAuth 2.0 security, cross-framework support for LangChain, OpenAI, Hugging Face, federation capabilities, and production-ready deployment for intelligent agent discovery and collaboration.
