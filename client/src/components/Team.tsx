@@ -16,7 +16,7 @@ export default function Team() {
             </Badge>
             
             <h2 className="text-4xl font-bold text-foreground mb-6" data-testid="text-team-title" itemProp="headline">
-              A2A Registry - Engineered by Amazon & Google AI Infrastructure Veterans
+              Engineered by Amazon & Google AI Infra Veterans
             </h2>
             
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed" data-testid="text-team-subtitle" itemProp="description">
