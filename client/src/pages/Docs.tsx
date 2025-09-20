@@ -140,6 +140,369 @@ print(f"Agent capabilities: {agent_details.capabilities}")
 
 # Download agent
 registry.download_agent("agent-id-here", "./downloaded-agent/")`,
+  githubBasicUsage: `#!/usr/bin/env python3
+"""
+Basic A2A SDK Usage Example
+This example demonstrates basic usage of the A2A Python SDK for:
+- Connecting to the registry
+- Publishing an agent
+- Searching for agents
+- Updating and deleting agents
+"""
+import os
+from a2a_sdk import A2AClient, AgentBuilder, AgentCapabilities, AuthScheme
+
+def main():
+    # Initialize the client
+    client = A2AClient(
+        registry_url="http://localhost:8000",
+        client_id=os.getenv("A2A_CLIENT_ID"),
+        client_secret=os.getenv("A2A_CLIENT_SECRET"),
+    )
+
+    # Authenticate (required for publishing)
+    try:
+        client.authenticate()
+        print("✓ Authentication successful")
+    except Exception as e:
+        print(f"✗ Authentication failed: {e}")
+        return
+
+    # Create a simple agent
+    capabilities = AgentCapabilities(
+        protocols=["http"], 
+        supported_formats=["json"], 
+        max_concurrent_requests=5
+    )
+
+    auth_scheme = AuthScheme(
+        type="api_key",
+        description="Simple API key authentication",
+        required=True,
+        header_name="X-API-Key",
+    )
+
+    agent = (
+        AgentBuilder("my-test-agent", "A test agent for demonstration", "1.0.0", "my-org")
+        .with_tags(["test", "demo", "ai"])
+        .with_location("https://my-org.com/api/agent")
+        .with_capabilities(capabilities)
+        .with_auth_schemes([auth_scheme])
+        .public(True)
+        .active(True)
+        .build()
+    )
+
+    try:
+        # Publish the agent
+        published_agent = client.publish_agent(agent)
+        print(f"✓ Agent published successfully with ID: {published_agent.id}")
+
+        # List public agents
+        agents_response = client.list_agents(page=1, limit=10)
+        print(f"✓ Found {len(agents_response.get('agents', []))} public agents")
+
+        # Search for agents
+        search_results = client.search_agents(
+            query="test", filters={"tags": ["demo"]}, page=1, limit=5
+        )
+        print(f"✓ Search found {len(search_results.get('agents', []))} matching agents")
+
+        # Get agent details
+        agent_details = client.get_agent(published_agent.id)
+        print(f"✓ Retrieved agent details: {agent_details.name}")
+
+        # Update the agent
+        agent_details.description = "Updated description for my test agent"
+        updated_agent = client.update_agent(published_agent.id, agent_details)
+        print(f"✓ Agent updated successfully")
+
+        # Clean up - delete the agent
+        client.delete_agent(published_agent.id)
+        print(f"✓ Agent deleted successfully")
+
+    except Exception as e:
+        print(f"✗ Operation failed: {e}")
+    finally:
+        # Close the client
+        client.close()
+
+if __name__ == "__main__":
+    main()`,
+  githubAdvancedAgent: `#!/usr/bin/env python3
+"""
+Advanced A2A Agent Example
+This example demonstrates creating a sophisticated agent with:
+- Complex capabilities and skills
+- Multiple authentication schemes  
+- TEE (Trusted Execution Environment) details
+- Comprehensive agent card metadata
+"""
+import os
+from a2a_sdk import (
+    A2AClient,
+    AgentBuilder,
+    AgentCapabilities,
+    AuthScheme,
+    AgentTeeDetails,
+    AgentSkills,
+    AgentCard,
+)
+
+def create_advanced_agent():
+    """Create an advanced agent with comprehensive configuration."""
+    
+    # Define sophisticated capabilities
+    capabilities = AgentCapabilities(
+        protocols=["http", "websocket", "grpc"],
+        supported_formats=["json", "xml", "protobuf", "msgpack"],
+        max_request_size=10485760,  # 10MB
+        max_concurrent_requests=50,
+        a2a_version="1.0",
+    )
+
+    # Define multiple authentication schemes
+    auth_schemes = [
+        AuthScheme(
+            type="api_key",
+            description="API key for basic authentication",
+            required=True,
+            header_name="X-API-Key",
+        ),
+        AuthScheme(
+            type="oauth2",
+            description="OAuth 2.0 for advanced authentication", 
+            required=False,
+        ),
+        AuthScheme(
+            type="jwt",
+            description="JWT tokens for stateless authentication",
+            required=False,
+            header_name="Authorization",
+        ),
+    ]
+
+    # Define TEE details for secure execution
+    tee_details = AgentTeeDetails(
+        enabled=True,
+        provider="Intel SGX",
+        attestation="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+    )
+
+    # Define agent skills with detailed schemas
+    skills = AgentSkills(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Natural language query or command",
+                },
+                "context": {
+                    "type": "object", 
+                    "properties": {
+                        "user_id": {"type": "string"},
+                        "session_id": {"type": "string"},
+                        "preferences": {"type": "object"},
+                    },
+                },
+                "options": {
+                    "type": "object",
+                    "properties": {
+                        "max_tokens": {"type": "integer", "minimum": 1, "maximum": 4096},
+                        "temperature": {"type": "number", "minimum": 0.0, "maximum": 2.0},
+                        "top_p": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+                    },
+                },
+            },
+            "required": ["query"],
+        },
+        output_schema={
+            "type": "object",
+            "properties": {
+                "response": {"type": "string", "description": "Generated response"},
+                "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+                "metadata": {
+                    "type": "object",
+                    "properties": {
+                        "tokens_used": {"type": "integer"},
+                        "processing_time_ms": {"type": "integer"},
+                        "model_version": {"type": "string"},
+                    },
+                },
+                "alternatives": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Alternative responses",
+                },
+            },
+            "required": ["response", "confidence"],
+        },
+        examples=[
+            "Query: 'Explain quantum computing' -> Response: 'Quantum computing is...', Confidence: 0.92",
+            "Query: 'Translate hello to French' -> Response: 'Bonjour', Confidence: 0.98", 
+            "Query: 'Summarize this document' -> Response: 'The document discusses...', Confidence: 0.85",
+        ],
+    )
+
+    # Build the complete agent
+    agent = (
+        AgentBuilder(
+            name="advanced-ai-assistant",
+            description="An advanced AI assistant with multi-modal capabilities, secure TEE execution, and comprehensive API support",
+            version="2.1.0", 
+            provider="advanced-ai-corp",
+        )
+        .with_tags([
+            "ai", "assistant", "nlp", "multimodal", "secure", 
+            "enterprise", "conversation", "completion", "embedding", "tee",
+        ])
+        .with_location("https://api.advanced-ai.com/v2/agent", "api_endpoint")
+        .with_capabilities(capabilities)
+        .with_auth_schemes(auth_schemes)
+        .with_tee_details(tee_details)
+        .with_skills(skills)
+        .public(True)
+        .active(True)
+        .build()
+    )
+
+    return agent
+
+def main():
+    # Initialize client
+    client = A2AClient(
+        registry_url="http://localhost:8000",
+        client_id=os.getenv("A2A_CLIENT_ID"),
+        client_secret=os.getenv("A2A_CLIENT_SECRET"),
+    )
+
+    try:
+        # Authenticate
+        client.authenticate()
+        print("✓ Authentication successful")
+
+        # Create advanced agent
+        advanced_agent = create_advanced_agent()
+        print(f"✓ Created advanced agent: {advanced_agent.name}")
+        print(f"  - Tags: {', '.join(advanced_agent.tags)}")
+        print(f"  - Protocols: {', '.join(advanced_agent.capabilities.protocols)}")
+        print(f"  - Auth schemes: {len(advanced_agent.auth_schemes)}")
+        print(f"  - TEE enabled: {advanced_agent.tee_details.enabled}")
+
+        # Publish the agent
+        published_agent = client.publish_agent(advanced_agent)
+        print(f"✓ Advanced agent published with ID: {published_agent.id}")
+
+        # Search for advanced features
+        search_results = client.search_agents(
+            query="advanced AI TEE secure",
+            filters={
+                "tags": ["enterprise", "secure"],
+                "capabilities.protocols": ["grpc"],
+            },
+            semantic=True,
+        )
+        print(f"✓ Semantic search found {len(search_results.get('agents', []))} matching agents")
+
+        # Clean up
+        client.delete_agent(published_agent.id)
+        print("✓ Advanced agent deleted")
+
+    except Exception as e:
+        print(f"✗ Operation failed: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        client.close()
+
+if __name__ == "__main__":
+    main()`,
+  githubPublisherExample: `#!/usr/bin/env python3
+"""
+A2A Agent Publisher Example
+This example demonstrates using the high-level AgentPublisher class for:
+- Creating sample agent configurations
+- Loading agents from configuration files  
+- Publishing and managing agents with validation
+"""
+import os
+from pathlib import Path
+from a2a_sdk import A2AClient, AgentPublisher
+
+def main():
+    # Create client and publisher
+    client = A2AClient(
+        registry_url="http://localhost:8000",
+        client_id=os.getenv("A2A_CLIENT_ID"),
+        client_secret=os.getenv("A2A_CLIENT_SECRET"),
+    )
+
+    try:
+        client.authenticate()
+        print("✓ Authentication successful")
+    except Exception as e:
+        print(f"✗ Authentication failed: {e}")
+        return
+
+    publisher = AgentPublisher(client)
+
+    # Create a sample agent configuration
+    sample_agent = publisher.create_sample_agent(
+        name="sample-chatbot",
+        description="A sample AI chatbot agent",
+        version="1.2.0",
+        provider="demo-corp", 
+        api_url="https://demo-corp.com/api",
+    )
+    print(f"✓ Created sample agent: {sample_agent.name}")
+
+    # Save the configuration to a file
+    config_path = Path("sample_agent.yaml")
+    publisher.save_agent_config(sample_agent, config_path, format="yaml")
+    print(f"✓ Saved agent configuration to {config_path}")
+
+    try:
+        # Validate the agent
+        validation_errors = publisher.validate_agent(sample_agent)
+        if validation_errors:
+            print(f"✗ Validation errors: {validation_errors}")
+            return
+        else:
+            print("✓ Agent configuration is valid")
+
+        # Publish the agent
+        published_agent = publisher.publish(sample_agent, validate=True)
+        print(f"✓ Agent published with ID: {published_agent.id}")
+
+        # Load and publish from file
+        loaded_agent = publisher.load_agent_from_file(config_path)
+        loaded_agent.name = "sample-chatbot-from-file"  # Change name to avoid conflict
+        published_from_file = publisher.publish(loaded_agent, validate=True)
+        print(f"✓ Agent from file published with ID: {published_from_file.id}")
+
+        # Update the agent
+        published_agent.description = "Updated sample AI chatbot with new features"
+        updated_agent = publisher.update(
+            published_agent.id, published_agent, validate=True
+        )
+        print(f"✓ Agent updated successfully")
+
+        # Clean up
+        client.delete_agent(published_agent.id)
+        client.delete_agent(published_from_file.id)
+        print("✓ Cleanup completed")
+
+    except Exception as e:
+        print(f"✗ Operation failed: {e}")
+    finally:
+        # Clean up the config file
+        if config_path.exists():
+            config_path.unlink()
+        client.close()
+
+if __name__ == "__main__":
+    main()`,
   a2aCard: `{
   "name": "my-ai-agent",
   "version": "1.0.0",
@@ -605,6 +968,45 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                 <CodeBlock title="Agent Search & Discovery" language="python">
                   {codeExamples.sdkQuery}
                 </CodeBlock>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Complete Examples</h2>
+                <p className="text-muted-foreground mb-4">
+                  Real-world examples from the A2A Registry GitHub repository:
+                </p>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Basic Usage Example</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Complete example showing authentication, publishing, searching, and cleanup:
+                    </p>
+                    <CodeBlock title="basic_usage.py" language="python">
+                      {codeExamples.githubBasicUsage}
+                    </CodeBlock>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Advanced Agent Example</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Sophisticated agent with TEE security, multiple auth schemes, and complex capabilities:
+                    </p>
+                    <CodeBlock title="advanced_agent.py" language="python">
+                      {codeExamples.githubAdvancedAgent}
+                    </CodeBlock>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Publisher Example</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      High-level AgentPublisher class with configuration files and validation:
+                    </p>
+                    <CodeBlock title="publisher_example.py" language="python">
+                      {codeExamples.githubPublisherExample}
+                    </CodeBlock>
+                  </div>
+                </div>
               </Card>
 
               <Card className="p-6 bg-muted/50">
