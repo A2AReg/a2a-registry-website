@@ -69,7 +69,7 @@ export default function Features() {
             A2A Registry Core Features
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-features-subtitle" itemProp="description">
-            Complete enterprise AI agent platform with semantic search, OAuth 2.0 security, cross-framework support for LangChain, OpenAI, Hugging Face, federation capabilities, and production-ready deployment for intelligent agent discovery and collaboration.
+            Complete enterprise AI agent platform with semantic search, OAuth 2.0 security, cross-framework support for LangChain, CrewAI, ADA, HF and other agents, federation capabilities, and production-ready deployment for intelligent agent discovery and collaboration.
           </p>
         </header>
         
