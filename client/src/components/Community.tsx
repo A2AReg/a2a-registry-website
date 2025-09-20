@@ -122,7 +122,7 @@ export default function Community() {
               
               <p className="text-sm text-muted-foreground" data-testid="text-security-note">
                 Security is important to us. Please report security vulnerabilities privately to{" "}
-                <code className="text-foreground bg-muted px-1 rounded">security@a2areg.dev</code>
+                <code className="text-foreground bg-muted px-1 rounded">security@a2areg.com</code>
               </p>
             </div>
           </div>
