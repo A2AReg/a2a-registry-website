@@ -35,7 +35,7 @@ const navigationItems = [
 ];
 
 const codeExamples = {
-  installation: `pip install a2a-publisher`,
+  installation: `pip install a2a-reg-sdk`,
   basicPublish: `a2a-publisher publish ./a2a-card.json`,
   sdkInstallation: `pip install a2a-reg-sdk`,
   sdkBasicUsage: `from a2a_reg_sdk import A2ARegistry, AgentCard

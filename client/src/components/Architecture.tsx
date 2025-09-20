@@ -25,7 +25,7 @@ docker-compose up -d
 pip install a2a-reg-sdk
 
 # Install CLI Publisher Tool  
-pip install a2a-publisher`,
+pip install a2a-reg-sdk`,
   
   register: `# Register an Agent with Python SDK
 from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities
