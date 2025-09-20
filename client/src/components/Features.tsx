@@ -58,7 +58,10 @@ const technicalFeatures = [
 
 export default function Features() {
   return (
-    <section className="py-24 bg-muted/30" id="features">
+    <section className="py-24 bg-muted/30 relative" id="features">
+      {/* Top separator */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+      
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center space-y-4 mb-16">
@@ -116,6 +119,9 @@ export default function Features() {
           ))}
         </div>
       </div>
+      
+      {/* Bottom separator */}
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
     </section>
   );
 }

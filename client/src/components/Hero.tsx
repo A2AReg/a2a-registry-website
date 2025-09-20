@@ -14,6 +14,9 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center">
+      {/* Top separator */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+      
       {/* Clean gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20"></div>
       
@@ -96,6 +99,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      
+      {/* Bottom separator */}
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
     </section>
   );
 }

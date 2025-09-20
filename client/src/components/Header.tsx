@@ -3,6 +3,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Github, MessageCircle, Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "wouter";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -46,13 +47,13 @@ export default function Header() {
           >
             Getting Started
           </button>
-          <button 
-            onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry#api-usage', 'Documentation')}
+          <Link 
+            href="/docs"
             className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-3 py-2 rounded-md"
             data-testid="nav-documentation"
           >
             Documentation
-          </button>
+          </Link>
         </nav>
         
         {/* Desktop Action buttons */}
@@ -104,13 +105,14 @@ export default function Header() {
                 >
                   Getting Started
                 </button>
-                <button 
-                  onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry#api-usage', 'Documentation')}
+                <Link 
+                  href="/docs"
                   className="text-left text-muted-foreground hover:text-foreground transition-colors hover-elevate px-3 py-2 rounded-md"
                   data-testid="nav-mobile-documentation"
+                  onClick={() => setOpen(false)}
                 >
                   Documentation
-                </button>
+                </Link>
                 <div className="border-t pt-6 space-y-4">
                   <Button 
                     variant="ghost" 
