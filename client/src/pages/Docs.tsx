@@ -614,13 +614,6 @@ export default function Docs() {
                       Similarly, vendors may also provide a number of agents as part of their offerings similar to how public APIs are documented today. The vendors of agents may need to provide a list of available agents for consumption to their customers. These agents could be publicly accessible or granted by entitlements to their customers.
                       
                       This A2A registry is a service that could be deployed to enterprise environments or publicly accessible endpoints that can help with agent discovery and entitlements.
-                      
-                      The following are the key terms used in this document:
-                      
-                      Agents: Agentic applications running within an enterprise or hosted externally.
-                      Agent Card: A JSON document published by an agent describing its capabilities, protocols and authentication mechanisms.
-                      Client: A client is an application, service or an agent that can consume Agents
-                      Agent Entitlement: A permission granted to a client to enable fetching available agents for its use.
                     </p>
                   </div>
                 </div>
