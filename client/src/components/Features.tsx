@@ -102,7 +102,7 @@ export default function Features() {
               data-testid={`card-tech-feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
               <div className="space-y-4">
-                <div className="text-muted-foreground p-2 w-fit rounded-md bg-muted/50">
+                <div className="text-primary p-2 w-fit rounded-md bg-primary/10">
                   <feature.icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-lg font-bold text-foreground">
