@@ -16,45 +16,66 @@ const codeExamples = {
   install: `# Quick start with Docker
 git clone https://github.com/A2AReg/a2a-registry.git
 cd a2a-registry
-docker-compose up -d`,
+docker-compose up -d
+
+# Install Python SDK
+pip install a2a-sdk`,
   
-  register: `# Register an Agent
-curl -X POST "http://localhost:8000/agents" \\
-  -H "Authorization: Bearer YOUR_TOKEN" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "agent_card": {
-      "id": "my-agent",
-      "name": "My AI Agent",
-      "version": "1.0.0",
-      "capabilities": {
-        "a2a_version": "1.0",
-        "supported_protocols": ["http", "grpc"]
-      },
-      "provider": "My Company",
-      "tags": ["ai", "assistant"]
-    },
-    "is_public": true
-  }'`,
+  register: `# Register an Agent with Python SDK
+from a2a_sdk import A2AClient, AgentBuilder, AgentCapabilities
+
+client = A2AClient(
+    registry_url="http://localhost:8000",
+    client_id=os.getenv("A2A_CLIENT_ID"),
+    client_secret=os.getenv("A2A_CLIENT_SECRET"),
+)
+
+# Create and publish agent
+agent = (
+    AgentBuilder(
+        "my-test-agent", 
+        "A test agent for demonstration", 
+        "1.0.0", 
+        "my-org"
+    )
+    .with_tags(["test", "demo", "ai"])
+    .with_location("https://my-org.com/api/agent")
+    .public(True)
+    .build()
+)
+
+published_agent = client.publish_agent(agent)
+print(f"Agent published with ID: {published_agent.id}")`,
   
   search: `# Search for Agents
-curl -X POST "http://localhost:8000/agents/search" \\
-  -H "Authorization: Bearer YOUR_TOKEN" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "query": "AI assistant",
-    "filters": {
-      "provider": "My Company",
-      "tags": ["ai"]
-    },
-    "top": 10
-  }'`
+# Basic search
+agents = client.list_agents(page=1, limit=10)
+print(f"Found {len(agents.get('agents', []))} public agents")
+
+# Advanced semantic search  
+search_results = client.search_agents(
+    query="AI assistant with natural language processing",
+    filters={"tags": ["ai", "nlp"], "provider": "my-org"},
+    semantic=True,
+    page=1, 
+    limit=5
+)
+
+for agent in search_results.get('agents', []):
+    print(f"- {agent.name}: {agent.description}")
+    print(f"  Tags: {', '.join(agent.tags)}")
+    print(f"  Provider: {agent.provider}")`
 };
 
 export default function Architecture() {
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     console.log(`${label} code copied to clipboard`);
+  };
+
+  const handleExternalLink = (url: string, label: string) => {
+    console.log(`${label} link clicked`);
+    window.open(url, '_blank');
   };
 
   return (
@@ -146,9 +167,19 @@ export default function Architecture() {
             {/* Register Agent */}
             <Card className="p-6 bg-muted border-card-border">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-register-agent-title">
-                  Register an Agent
-                </h4>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-register-agent-title">
+                    Register an Agent
+                  </h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry/tree/main/examples/python', 'Python Examples')}
+                    data-testid="button-view-examples"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
                 <Button 
                   variant="ghost" 
                   size="sm"
