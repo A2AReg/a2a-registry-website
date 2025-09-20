@@ -2,6 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Copy, ExternalLink } from "lucide-react";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useTheme } from "@/components/theme-provider";
 
 const architectureComponents = [
   { name: "React 18", description: "Modern frontend with TypeScript" },
@@ -97,6 +100,10 @@ for agent in search_results.get('agents', []):
 };
 
 export default function Architecture() {
+  const { theme } = useTheme();
+  const prefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = theme === 'dark' || (theme === 'system' && prefersDark);
+  
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     console.log(`${label} code copied to clipboard`);
@@ -188,9 +195,17 @@ export default function Architecture() {
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
-              <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground">
-                <code>{codeExamples.install}</code>
-              </pre>
+              <SyntaxHighlighter 
+                language="bash"
+                style={isDark ? oneDark : oneLight}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                }}
+              >
+                {codeExamples.install}
+              </SyntaxHighlighter>
             </Card>
             
             {/* Register Agent */}
@@ -218,9 +233,19 @@ export default function Architecture() {
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
-              <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground max-h-48 overflow-y-auto">
-                <code>{codeExamples.register}</code>
-              </pre>
+              <div className="max-h-48 overflow-y-auto rounded-lg">
+                <SyntaxHighlighter 
+                  language="python"
+                  style={isDark ? oneDark : oneLight}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  {codeExamples.register}
+                </SyntaxHighlighter>
+              </div>
             </Card>
             
             {/* CLI Publisher Tool */}
@@ -248,9 +273,19 @@ export default function Architecture() {
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
-              <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground max-h-48 overflow-y-auto">
-                <code>{codeExamples.publisher}</code>
-              </pre>
+              <div className="max-h-48 overflow-y-auto rounded-lg">
+                <SyntaxHighlighter 
+                  language="bash"
+                  style={isDark ? oneDark : oneLight}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  {codeExamples.publisher}
+                </SyntaxHighlighter>
+              </div>
             </Card>
             
             {/* Search Agents */}
@@ -268,9 +303,17 @@ export default function Architecture() {
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
-              <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground">
-                <code>{codeExamples.search}</code>
-              </pre>
+              <SyntaxHighlighter 
+                language="python"
+                style={isDark ? oneDark : oneLight}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                }}
+              >
+                {codeExamples.search}
+              </SyntaxHighlighter>
             </Card>
           </div>
         </div>
