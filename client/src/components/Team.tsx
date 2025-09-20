@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users, Award, Code } from "lucide-react";
+import { SiGoogle, SiAmazon } from "react-icons/si";
 
 const teamHighlights = [
   {
@@ -40,6 +41,18 @@ export default function Team() {
             The A2A Registry is built by engineers who have designed and scaled 
             distributed systems at the world's largest technology companies.
           </p>
+          
+          {/* Company Logos */}
+          <div className="flex flex-wrap items-center gap-8 pt-4 justify-center sm:justify-start">
+            <div className="flex items-center gap-2 text-muted-foreground" data-testid="logo-google">
+              <SiGoogle className="h-8 w-8 text-[#4285F4]" aria-hidden="true" />
+              <span className="text-sm font-medium">Google</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground" data-testid="logo-amazon">
+              <SiAmazon className="h-8 w-8 text-[#FF9900]" aria-hidden="true" />
+              <span className="text-sm font-medium">Amazon</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
