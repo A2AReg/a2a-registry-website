@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Copy, ExternalLink } from "lucide-react";
 
 const architectureComponents = [
-  { name: "React 18", description: "Modern frontend with TypeScript", color: "bg-chart-1/10 text-chart-1" },
-  { name: "FastAPI", description: "High-performance Python backend", color: "bg-chart-2/10 text-chart-2" },
-  { name: "PostgreSQL", description: "Reliable data persistence", color: "bg-chart-3/10 text-chart-3" },
-  { name: "Elasticsearch", description: "Advanced search capabilities", color: "bg-chart-4/10 text-chart-4" },
-  { name: "Redis", description: "High-speed caching layer", color: "bg-chart-5/10 text-chart-5" },
-  { name: "Docker", description: "Containerized deployment", color: "bg-primary/10 text-primary" }
+  { name: "React 18", description: "Modern frontend with TypeScript" },
+  { name: "FastAPI", description: "High-performance Python backend" },
+  { name: "PostgreSQL", description: "Reliable data persistence" },
+  { name: "Elasticsearch", description: "Advanced search capabilities" },
+  { name: "Redis", description: "High-speed caching layer" },
+  { name: "Docker", description: "Containerized deployment" }
 ];
 
 const codeExamples = {
@@ -114,7 +114,7 @@ export default function Architecture() {
           {/* Architecture Overview */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-semibold text-foreground" data-testid="text-architecture-title">
+              <h2 className="text-4xl font-bold text-foreground" data-testid="text-architecture-title">
                 Enterprise Architecture
               </h2>
               <p className="text-lg text-muted-foreground" data-testid="text-architecture-subtitle">
@@ -127,11 +127,11 @@ export default function Architecture() {
               {architectureComponents.map((component, index) => (
                 <Card 
                   key={component.name} 
-                  className="p-4 hover-elevate transition-all duration-300"
+                  className="p-4 hover-elevate"
                   data-testid={`card-tech-${component.name.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <div className="space-y-2">
-                    <Badge variant="secondary" className={`${component.color} font-medium`}>
+                    <Badge variant="secondary" className="font-medium">
                       {component.name}
                     </Badge>
                     <p className="text-sm text-muted-foreground">
@@ -174,7 +174,7 @@ export default function Architecture() {
             </h3>
             
             {/* Installation */}
-            <Card className="p-6 bg-muted border-card-border">
+            <Card className="p-6 bg-muted border border-border/50">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-quick-start-title">
                   Quick Start
@@ -194,7 +194,7 @@ export default function Architecture() {
             </Card>
             
             {/* Register Agent */}
-            <Card className="p-6 bg-muted border-card-border">
+            <Card className="p-6 bg-muted border border-border/50">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-register-agent-title">
@@ -224,7 +224,7 @@ export default function Architecture() {
             </Card>
             
             {/* CLI Publisher Tool */}
-            <Card className="p-6 bg-muted border-card-border">
+            <Card className="p-6 bg-muted border border-border/50">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-cli-publisher-title">
@@ -254,7 +254,7 @@ export default function Architecture() {
             </Card>
             
             {/* Search Agents */}
-            <Card className="p-6 bg-muted border-card-border">
+            <Card className="p-6 bg-muted border border-border/50">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-search-agents-title">
                   Search Agents

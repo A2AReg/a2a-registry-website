@@ -17,29 +17,25 @@ const communityLinks = [
     icon: Github,
     title: "GitHub Repository",
     description: "Source code, issues, and contributions",
-    url: "https://github.com/A2AReg/a2a-registry",
-    color: "text-foreground"
+    url: "https://github.com/A2AReg/a2a-registry"
   },
   {
     icon: MessageCircle,
     title: "Discord Community",
     description: "Get help, share ideas, and connect with developers",
-    url: "https://discord.gg/rpe5nMSumw",
-    color: "text-chart-3"
+    url: "https://discord.gg/rpe5nMSumw"
   },
   {
     icon: BookOpen,
     title: "Documentation",
     description: "Complete API documentation and guides",
-    url: "https://github.com/A2AReg/a2a-registry#api-usage",
-    color: "text-chart-2"
+    url: "https://github.com/A2AReg/a2a-registry#api-usage"
   },
   {
     icon: Users,
     title: "A2A Community",
     description: "Join the broader A2A ecosystem discussions",
-    url: "https://github.com/a2aproject/A2A/discussions",
-    color: "text-chart-4"
+    url: "https://github.com/a2aproject/A2A/discussions"
   }
 ];
 
@@ -74,10 +70,10 @@ export default function Community() {
           {/* Enterprise Benefits */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-semibold text-foreground" data-testid="text-enterprise-title">
+              <h2 className="text-4xl font-bold text-foreground" data-testid="text-enterprise-title">
                 Enterprise Ready
               </h2>
-              <p className="text-lg text-muted-foreground" data-testid="text-enterprise-subtitle">
+              <p className="text-lg text-muted-foreground max-w-3xl" data-testid="text-enterprise-subtitle">
                 Built for enterprise environments with security, scalability, and reliability at its core.
               </p>
             </div>
@@ -86,15 +82,15 @@ export default function Community() {
               {enterpriseFeatures.map((feature, index) => (
                 <Card 
                   key={feature.title} 
-                  className="p-6 hover-elevate transition-all duration-300 border-card-border"
+                  className="p-6 hover-elevate border border-border/50"
                   data-testid={`card-enterprise-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <div className="flex items-start space-x-4">
-                    <div className="text-primary p-2 bg-primary/10 rounded-lg">
-                      <feature.icon className="h-6 w-6" />
+                    <div className="text-primary p-2 bg-primary/10 rounded-md">
+                      <feature.icon className="h-5 w-5" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-semibold text-card-foreground">
+                      <h3 className="text-xl font-bold text-foreground">
                         {feature.title}
                       </h3>
                       <p className="text-muted-foreground">
@@ -109,13 +105,13 @@ export default function Community() {
             {/* License and security info */}
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary" className="bg-chart-2/10 text-chart-2" data-testid="badge-license">
+                <Badge variant="secondary" data-testid="badge-license">
                   Apache 2.0 License
                 </Badge>
-                <Badge variant="secondary" className="bg-chart-1/10 text-chart-1" data-testid="badge-production">
+                <Badge variant="secondary" data-testid="badge-production">
                   Production Ready
                 </Badge>
-                <Badge variant="secondary" className="bg-chart-3/10 text-chart-3" data-testid="badge-docker">
+                <Badge variant="secondary" data-testid="badge-docker">
                   Docker Ready
                 </Badge>
               </div>
@@ -130,10 +126,10 @@ export default function Community() {
           {/* Community Links */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-semibold text-foreground" data-testid="text-community-title">
+              <h2 className="text-4xl font-bold text-foreground" data-testid="text-community-title">
                 Community & Resources
               </h2>
-              <p className="text-lg text-muted-foreground" data-testid="text-community-subtitle">
+              <p className="text-lg text-muted-foreground max-w-3xl" data-testid="text-community-subtitle">
                 Join our community and explore the resources to get the most out of A2A Registry.
               </p>
             </div>
@@ -142,17 +138,17 @@ export default function Community() {
               {communityLinks.map((link, index) => (
                 <Card 
                   key={link.title} 
-                  className="p-6 hover-elevate cursor-pointer transition-all duration-300 border-card-border"
+                  className="p-6 hover-elevate cursor-pointer border border-border/50"
                   onClick={() => handleLinkClick(link.url, link.title)}
                   data-testid={`card-community-${link.title.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className={`${link.color} p-2 bg-background rounded-lg`}>
-                        <link.icon className="h-6 w-6" />
+                      <div className="text-muted-foreground p-2 bg-muted/50 rounded-md">
+                        <link.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-card-foreground">
+                        <h3 className="text-lg font-bold text-foreground">
                           {link.title}
                         </h3>
                         <p className="text-sm text-muted-foreground">
