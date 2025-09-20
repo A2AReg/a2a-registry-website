@@ -37,8 +37,8 @@ const navigationItems = [
 const codeExamples = {
   installation: `pip install a2a-publisher`,
   basicPublish: `a2a-publisher publish ./a2a-card.json`,
-  sdkInstallation: `pip install a2a-publisher-sdk`,
-  sdkBasicUsage: `from a2a_publisher_sdk import A2ARegistry, AgentCard
+  sdkInstallation: `pip install a2a-reg-sdk`,
+  sdkBasicUsage: `from a2a_reg_sdk import A2ARegistry, AgentCard
 
 # Initialize the registry client
 registry = A2ARegistry(
@@ -64,7 +64,7 @@ try:
     print(f"Agent published successfully: {result.agent_id}")
 except Exception as e:
     print(f"Publication failed: {e}")`,
-  sdkAdvanced: `from a2a_publisher_sdk import A2ARegistry, AgentCard, Dependency
+  sdkAdvanced: `from a2a_reg_sdk import A2ARegistry, AgentCard, Dependency
 
 # Advanced agent configuration
 agent = AgentCard(
@@ -116,7 +116,7 @@ result = registry.publish(
 
 print(f"Published agent: {result.agent_id}")
 print(f"Registry URL: {result.registry_url}")`,
-  sdkQuery: `from a2a_publisher_sdk import A2ARegistry
+  sdkQuery: `from a2a_reg_sdk import A2ARegistry
 
 registry = A2ARegistry(api_key="your-api-key")
 
@@ -150,7 +150,7 @@ This example demonstrates basic usage of the A2A Python SDK for:
 - Updating and deleting agents
 """
 import os
-from a2a_sdk import A2AClient, AgentBuilder, AgentCapabilities, AuthScheme
+from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities, AuthScheme
 
 def main():
     # Initialize the client
@@ -239,7 +239,7 @@ This example demonstrates creating a sophisticated agent with:
 - Comprehensive agent card metadata
 """
 import os
-from a2a_sdk import (
+from a2a_reg_sdk import (
     A2AClient,
     AgentBuilder,
     AgentCapabilities,
@@ -428,7 +428,7 @@ This example demonstrates using the high-level AgentPublisher class for:
 """
 import os
 from pathlib import Path
-from a2a_sdk import A2AClient, AgentPublisher
+from a2a_reg_sdk import A2AClient, AgentPublisher
 
 def main():
     # Create client and publisher
@@ -933,7 +933,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
               <Card className="p-6">
                 <h2 className="text-2xl font-bold text-foreground mb-4">Installation</h2>
                 <p className="text-muted-foreground mb-4">
-                  Install the A2A Publisher SDK using pip:
+                  Install the A2A Registry SDK using pip:
                 </p>
                 <CodeBlock title="Install SDK" language="bash">
                   {codeExamples.sdkInstallation}
