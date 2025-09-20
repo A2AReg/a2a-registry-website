@@ -20,7 +20,7 @@ export default function Team() {
             </h2>
             
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed" data-testid="text-team-subtitle" itemProp="description">
-              The A2A Registry platform is architected and built by world-class engineers with extensive experience designing distributed AI systems, enterprise agent platforms, semantic search engines, and production-scale infrastructure at Amazon Web Services, Google Cloud, and leading AI companies. Our team brings deep expertise in LangChain, OpenAI integration, enterprise security, and multi-agent system orchestration.
+              The A2A Registry platform is architected and built by world-class engineers with extensive experience designing distributed AI systems, enterprise agent platforms, semantic search engines, and production-scale infrastructure at Amazon Web Services, Google Cloud, and leading AI companies. Our team brings deep expertise in AI/ML Infra, enterprise security, and multi-agent system orchestration.
             </p>
             
             {/* Subtle separator line */}
