@@ -27,6 +27,7 @@ const navigationItems = [
   { id: "installation", label: "Installation", icon: Download },
   { id: "configuration", label: "Configuration", icon: Settings },
   { id: "publishing", label: "Publishing Agents", icon: Play },
+  { id: "python-sdk", label: "Python SDK", icon: Code },
   { id: "api-reference", label: "API Reference", icon: Code },
   { id: "examples", label: "Examples", icon: FileText },
   { id: "security", label: "Security", icon: Shield },
@@ -36,6 +37,109 @@ const navigationItems = [
 const codeExamples = {
   installation: `pip install a2a-publisher`,
   basicPublish: `a2a-publisher publish ./a2a-card.json`,
+  sdkInstallation: `pip install a2a-publisher-sdk`,
+  sdkBasicUsage: `from a2a_publisher_sdk import A2ARegistry, AgentCard
+
+# Initialize the registry client
+registry = A2ARegistry(
+    api_key="your-api-key-here",
+    base_url="https://registry.a2areg.com"
+)
+
+# Create an agent card
+agent = AgentCard(
+    name="my-intelligent-agent",
+    version="1.0.0",
+    description="A powerful AI agent for text processing",
+    author="Your Name <you@example.com>",
+    tags=["nlp", "text-processing", "ai"],
+    framework="langchain",
+    runtime="python",
+    entry_point="src/main.py"
+)
+
+# Publish the agent
+try:
+    result = registry.publish(agent)
+    print(f"Agent published successfully: {result.agent_id}")
+except Exception as e:
+    print(f"Publication failed: {e}")`,
+  sdkAdvanced: `from a2a_publisher_sdk import A2ARegistry, AgentCard, Dependency
+
+# Advanced agent configuration
+agent = AgentCard(
+    name="advanced-nlp-agent",
+    version="2.1.0",
+    description="Advanced NLP agent with multi-model support",
+    author="AI Team <ai-team@company.com>",
+    tags=["nlp", "transformers", "enterprise", "production"],
+    framework="transformers",
+    runtime="python",
+    entry_point="src/agent.py",
+    dependencies=[
+        Dependency("transformers", "^4.20.0"),
+        Dependency("torch", "^2.0.0"),
+        Dependency("numpy", "^1.21.0")
+    ],
+    capabilities=[
+        "text-generation",
+        "sentiment-analysis", 
+        "named-entity-recognition",
+        "text-classification"
+    ],
+    resources={
+        "memory": "2Gi",
+        "cpu": "1000m",
+        "gpu": "1"
+    },
+    environment_variables={
+        "MODEL_PATH": "/models/bert-base-uncased",
+        "MAX_SEQUENCE_LENGTH": "512"
+    }
+)
+
+# Initialize registry with custom configuration
+registry = A2ARegistry(
+    api_key="your-api-key",
+    base_url="https://registry.a2areg.com",
+    timeout=30,
+    retry_attempts=3
+)
+
+# Publish with metadata
+result = registry.publish(
+    agent,
+    private=False,
+    license="MIT",
+    documentation_url="https://docs.example.com/agent"
+)
+
+print(f"Published agent: {result.agent_id}")
+print(f"Registry URL: {result.registry_url}")`,
+  sdkQuery: `from a2a_publisher_sdk import A2ARegistry
+
+registry = A2ARegistry(api_key="your-api-key")
+
+# Search for agents
+agents = registry.search(
+    query="text processing",
+    tags=["nlp", "ai"],
+    framework="langchain",
+    limit=10
+)
+
+for agent in agents:
+    print(f"Agent: {agent.name} v{agent.version}")
+    print(f"Description: {agent.description}")
+    print(f"Tags: {', '.join(agent.tags)}")
+    print("---")
+
+# Get specific agent details
+agent_details = registry.get_agent("agent-id-here")
+print(f"Agent capabilities: {agent_details.capabilities}")
+
+# Download agent
+registry.download_agent("agent-id-here", "./downloaded-agent/")`,
   a2aCard: `{
   "name": "my-ai-agent",
   "version": "1.0.0",
@@ -445,6 +549,102 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <CodeBlock title="Force Update" language="bash">
                       a2a-publisher publish --force ./a2a-card.json
                     </CodeBlock>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case "python-sdk":
+        return (
+          <div className="space-y-8">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground mb-4">Python SDK</h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Use the Python SDK for programmatic agent publishing and registry management.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Installation</h2>
+                <p className="text-muted-foreground mb-4">
+                  Install the A2A Publisher SDK using pip:
+                </p>
+                <CodeBlock title="Install SDK" language="bash">
+                  {codeExamples.sdkInstallation}
+                </CodeBlock>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Basic Usage</h2>
+                <p className="text-muted-foreground mb-4">
+                  Get started with publishing your first agent using the SDK:
+                </p>
+                <CodeBlock title="Basic Agent Publishing" language="python">
+                  {codeExamples.sdkBasicUsage}
+                </CodeBlock>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Advanced Configuration</h2>
+                <p className="text-muted-foreground mb-4">
+                  Publish production-ready agents with advanced configurations:
+                </p>
+                <CodeBlock title="Advanced Agent Configuration" language="python">
+                  {codeExamples.sdkAdvanced}
+                </CodeBlock>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Searching & Discovery</h2>
+                <p className="text-muted-foreground mb-4">
+                  Search and discover agents in the registry programmatically:
+                </p>
+                <CodeBlock title="Agent Search & Discovery" language="python">
+                  {codeExamples.sdkQuery}
+                </CodeBlock>
+              </Card>
+
+              <Card className="p-6 bg-muted/50">
+                <h2 className="text-2xl font-bold text-foreground mb-4">Key Features</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-foreground">Publishing</h3>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Programmatic agent publishing</li>
+                      <li>• Batch publishing support</li>
+                      <li>• Validation and error handling</li>
+                      <li>• Retry mechanisms</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-foreground">Discovery</h3>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Semantic search</li>
+                      <li>• Tag-based filtering</li>
+                      <li>• Framework filtering</li>
+                      <li>• Agent downloading</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-foreground">Management</h3>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Agent lifecycle management</li>
+                      <li>• Version control</li>
+                      <li>• Metadata updates</li>
+                      <li>• Access control</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-foreground">Integration</h3>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• CI/CD pipeline integration</li>
+                      <li>• Custom registry support</li>
+                      <li>• Authentication handling</li>
+                      <li>• Comprehensive logging</li>
+                    </ul>
                   </div>
                 </div>
               </Card>
