@@ -13,28 +13,25 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Modern gradient background similar to BelArabyAI */}
+    <section className="relative min-h-screen flex items-center justify-center">
+      {/* Clean gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20"></div>
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-chart-2/10"></div>
-      <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-chart-3/5 to-transparent"></div>
       
-      {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-gradient-to-r from-primary/20 to-chart-2/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/3 -right-32 w-80 h-80 bg-gradient-to-r from-chart-3/15 to-chart-4/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-chart-1/10 to-chart-5/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-      
-      {/* Subtle mesh overlay */}
+      {/* Subtle grid overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]"
+        className="absolute inset-0 opacity-[0.015] dark:opacity-[0.02]"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 25% 25%, hsl(var(--primary)) 2px, transparent 2px),
-            radial-gradient(circle at 75% 75%, hsl(var(--chart-2)) 1px, transparent 1px)
+            linear-gradient(hsl(var(--border)) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)
           `,
-          backgroundSize: '100px 100px'
+          backgroundSize: '32px 32px'
         }}
       ></div>
+      
+      {/* Soft vignette */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/20 via-transparent to-background/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/20"></div>
       
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center space-y-8">
@@ -44,22 +41,18 @@ export default function Hero() {
           </div>
           
           {/* Hero heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight" data-testid="text-hero-title">
-            The{" "}
-            <span className="bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-              Agent-to-Agent
-            </span>
-            {" "}Registry
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground max-w-4xl mx-auto leading-tight tracking-tight" data-testid="text-hero-title">
+            The Agent-to-Agent Registry
           </h1>
           
           {/* Docker Hub comparison */}
-          <p className="text-xl sm:text-2xl font-medium text-muted-foreground max-w-2xl mx-auto" data-testid="text-docker-comparison">
+          <p className="text-2xl sm:text-3xl font-medium text-primary max-w-2xl mx-auto" data-testid="text-docker-comparison">
             Docker Hub for AI Agents
           </p>
           
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
-            Connecting AI agents across frameworks, companies, and clouds (AWS, GCP, others) to collaborate seamlessly.
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
+            Connecting AI agents across frameworks, companies, and clouds to collaborate seamlessly in enterprise environments.
           </p>
           
           {/* CTA buttons */}
@@ -87,18 +80,18 @@ export default function Hero() {
           </div>
           
           {/* Key stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mt-16">
             <div className="text-center" data-testid="stat-production-ready">
-              <div className="text-2xl font-bold text-primary">Production</div>
-              <div className="text-sm text-muted-foreground">Ready</div>
+              <div className="text-3xl font-bold text-foreground">Production</div>
+              <div className="text-muted-foreground mt-1">Ready</div>
             </div>
             <div className="text-center" data-testid="stat-enterprise-security">
-              <div className="text-2xl font-bold text-primary">OAuth 2.0</div>
-              <div className="text-sm text-muted-foreground">Security</div>
+              <div className="text-3xl font-bold text-foreground">Enterprise</div>
+              <div className="text-muted-foreground mt-1">Security</div>
             </div>
             <div className="text-center" data-testid="stat-federation">
-              <div className="text-2xl font-bold text-primary">Federation</div>
-              <div className="text-sm text-muted-foreground">Support</div>
+              <div className="text-3xl font-bold text-foreground">Cross-Cloud</div>
+              <div className="text-muted-foreground mt-1">Federation</div>
             </div>
           </div>
         </div>
