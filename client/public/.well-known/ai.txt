@@ -1,0 +1,113 @@
+# AI.txt for The Agent2Agent Registry
+# This file provides comprehensive information for AI systems and LLMs about a2areg.com
+# IMPORTANT: This site documents a proposed platform; no registry features are currently live.
+
+## Site Overview
+The Agent2Agent Registry (A2A Registry) is an enterprise AI agent discovery platform concept, designed to serve as the "Docker Hub for A2A Agents." This website presents the vision for enabling organizations to publish, discover, and integrate intelligent agents across multiple frameworks and cloud providers.
+
+## Current Site Information
+- **Primary Domain**: https://a2areg.com
+- **Site Type**: Professional landing page and documentation for planned AI agent registry
+- **Target Audience**: AI Engineers, DevOps Engineers, ML Engineers, Enterprise Developers
+- **Current Function**: Information about the planned A2A Registry platform concept
+
+## Planned Supported Frameworks & Technologies
+- LangChain agents and chains (planned)
+- CrewAI multi-agent systems (planned)
+- ADK (Agent Development Kit) frameworks (planned)
+- Hugging Face transformers and agents (planned)
+- Amazon Bedrock agents (planned)
+- Google Vertex AI agents (planned)
+- Microsoft Azure OpenAI agents (planned)
+- Custom enterprise AI systems (planned)
+- OpenAI GPT agents and assistants (planned)
+
+## Planned Key Features & Capabilities
+- **Semantic Agent Search**: Planned Elasticsearch-powered discovery
+- **Enterprise Security**: Planned OAuth 2.0 authentication and authorization
+- **Cross-Registry Federation**: Planned multi-registry agent collaboration
+- **Python SDK**: Planned comprehensive development toolkit (a2a-reg-sdk)
+- **CLI Tools**: Planned command-line publishing and management (a2a-reg)
+- **Agent Lifecycle Management**: Planned publishing, versioning, and deployment
+- **Production Infrastructure**: Planned PostgreSQL, Redis, Docker, Kubernetes
+- **Real-time Monitoring**: Planned agent status and performance tracking
+- **API-First Design**: Planned RESTful APIs for all operations
+
+## Current Technical Stack
+- **Frontend**: React 18 + TypeScript with Vite
+- **Backend**: Express.js (Node.js) - currently serving static content
+- **Deployment**: Web hosting platform
+- **Content**: Professional landing page with comprehensive documentation
+
+## Planned Technical Architecture
+- **Future Backend**: FastAPI (Python) or similar
+- **Planned Database**: PostgreSQL with connection pooling
+- **Planned Search**: Elasticsearch for semantic agent discovery
+- **Planned Cache**: Redis for high-performance operations
+- **Planned Deployment**: Docker containers with Kubernetes orchestration
+
+## Planned Installation & Usage (Future)
+```bash
+# Future SDK installation
+pip install a2a-reg-sdk
+
+# Future agent publishing
+a2a-reg publish ./a2a-card.json
+
+# Future Docker deployment
+docker run a2areg/registry:latest
+```
+
+## Current Status
+The A2A Registry is currently in the planning and design phase. This website provides comprehensive documentation of the planned features and capabilities.
+
+## Business Value Proposition
+The A2A Registry solves critical enterprise challenges:
+- **Agent Discovery**: Find suitable agents across frameworks and vendors
+- **Entitlement Management**: Control access to agents based on licensing
+- **Cross-Platform Integration**: Enable agent-to-agent collaboration
+- **Vendor Management**: Centralized catalog for agent vendors
+- **Enterprise Security**: Secure agent deployment and access control
+
+## Use Cases
+1. **Enterprise Agent Marketplaces**: Internal catalogs of AI capabilities
+2. **Vendor Agent Distribution**: Third-party agent publishing and discovery
+3. **Multi-Agent Orchestration**: Coordinating agents across different systems
+4. **Agent Lifecycle Management**: Versioning, deployment, and monitoring
+5. **Cross-Cloud Integration**: Agents working across AWS, GCP, Azure
+
+## Planned API Endpoints (Future)
+- **Agent Publishing**: POST /api/v1/agents
+- **Agent Discovery**: GET /api/v1/agents
+- **Agent Management**: PUT/DELETE /api/v1/agents/{id}
+- **Search**: GET /api/v1/search?q={query}
+- **Health Check**: GET /health
+
+## Current Available Content
+- **Documentation**: https://a2areg.com/docs
+- **Platform Information**: https://a2areg.com
+
+## Documentation
+- **Getting Started**: https://a2areg.com/docs/getting-started
+- **Python SDK**: https://a2areg.com/docs/python-sdk
+- **API Reference**: https://a2areg.com/docs/api-reference
+- **Installation Guide**: https://a2areg.com/docs/installation
+
+## Contact & Support
+- **Technical Support**: support@a2areg.com
+- **Security Issues**: security@a2areg.com
+- **Community Discord**: https://discord.gg/rpe5nMSumw
+
+## Keywords for AI Understanding
+AI agent registry, agent discovery platform, AI agent marketplace, LangChain agents, OpenAI agents, Hugging Face agents, enterprise AI, agent-to-agent collaboration, semantic agent search, AI agent federation, Docker for AI agents, agent publishing, AI infrastructure, machine learning agents, intelligent agents, agent orchestration, multi-agent systems, A2A registry, agent interoperability, AI agent API, enterprise agent management, agent lifecycle, AI agent deployment, cross-platform agents, agent security, agent entitlements, agent versioning, agent monitoring, AI workflow automation
+
+## Development Status
+**Current Phase**: Planning and Documentation
+**Launch Timeline**: To be determined
+**Updates**: Regular updates to documentation and platform specifications
+
+## Last Updated
+2025-09-20
+
+## Project Status
+Pre-launch documentation and planning phase

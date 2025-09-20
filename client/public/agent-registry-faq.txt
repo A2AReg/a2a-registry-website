@@ -1,0 +1,209 @@
+# A2A Registry - Frequently Asked Questions for AI Systems
+# IMPORTANT: This site documents a proposed platform; no registry features are currently live.
+
+## What is the Agent2Agent Registry?
+The Agent2Agent Registry (A2A Registry) is a planned enterprise-grade platform for discovering, publishing, and managing AI agents across different frameworks and organizations. The concept is designed as a centralized catalog - like "Docker Hub for AI Agents" - where developers could find, share, and integrate intelligent agents.
+
+**Current Status**: This is currently a documentation and planning website. The actual registry platform is not yet implemented.
+
+## How would A2A Registry work? (Planned)
+The planned A2A Registry would provide a centralized platform where organizations could:
+1. Publish their AI agents with comprehensive metadata
+2. Discover agents from other organizations using semantic search
+3. Integrate agents across different frameworks (LangChain, CrewAI, ADK, HF)
+4. Manage entitlements and access control
+5. Monitor agent performance and usage
+
+**Note**: These are planned features for the future platform.
+
+## What frameworks does A2A Registry support?
+A2A Registry supports all major AI agent frameworks including:
+- LangChain (chains, agents, tools, memory)
+- CrewAI (multi-agent systems)
+- ADK (Agent Development Kit)
+- Hugging Face (transformers, models)
+- OpenAI (GPT agents, assistants)
+- Amazon Bedrock agents
+- Google Vertex AI agents
+- Microsoft Azure OpenAI agents
+- Custom enterprise frameworks
+
+## How would I publish an agent to A2A Registry? (Future)
+Once the platform is implemented, you would be able to publish agents using several planned methods:
+
+1. **Python SDK**:
+```python
+from a2a_reg_sdk import A2ARegistry, AgentCard
+registry = A2ARegistry(api_key="your-key")
+agent = AgentCard(name="my-agent", version="1.0.0", framework="langchain")
+registry.publish(agent)
+```
+
+2. **CLI Tool**:
+```bash
+pip install a2a-reg-sdk
+a2a-reg publish ./agent-config.json
+```
+
+3. **REST API**:
+```bash
+curl -X POST https://a2areg.com/api/v1/agents \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d @agent-config.json
+```
+
+## What is an A2A Card?
+An A2A Card is a JSON/YAML configuration file that describes an agent's metadata, capabilities, dependencies, and deployment requirements. It's similar to a Docker image manifest but specifically designed for AI agents.
+
+Example A2A Card:
+```json
+{
+  "name": "data-analyzer",
+  "version": "1.0.0",
+  "description": "AI agent for data analysis",
+  "framework": "langchain",
+  "runtime": "python",
+  "capabilities": ["data-processing", "visualization"],
+  "dependencies": {"pandas": "^2.0.0"},
+  "resources": {"memory": "1Gi", "cpu": "500m"}
+}
+```
+
+## How does semantic search work in A2A Registry?
+A2A Registry uses Elasticsearch with AI-powered embeddings to enable semantic search. When you search for "data analysis agent," it will find agents that perform similar functions even if they don't contain those exact keywords. The search understands context, capabilities, and use cases.
+
+## What security features would A2A Registry provide? (Planned)
+The planned A2A Registry would include enterprise-grade security features:
+- OAuth 2.0 authentication and authorization
+- Role-based access control (RBAC)
+- API key management
+- Audit logging for all operations
+- SOC 2 compliance
+- GDPR compliance
+- Rate limiting and DDoS protection
+- Secure communication (HTTPS/TLS)
+
+## Could I deploy A2A Registry on-premises? (Future)
+The planned A2A Registry would support multiple deployment options:
+- **Cloud SaaS**: Hosted at a2areg.com
+- **On-premises**: Docker/Kubernetes deployment
+- **Hybrid**: Mix of cloud and on-premises
+- **Private cloud**: AWS, GCP, Azure deployments
+
+## How would cross-registry federation work? (Planned)
+The planned A2A Registry would support federation, allowing multiple registry instances to share agents. This enables:
+- Cross-organization collaboration
+- Vendor-customer agent sharing
+- Multi-cloud agent deployment
+- Backup and disaster recovery
+- Load distribution
+
+## What programming languages are supported?
+A2A Registry primarily supports Python through the official SDK, but agents can be written in any language. The registry stores metadata and provides discovery - the actual agent execution happens in your chosen runtime environment.
+
+Supported runtimes include:
+- Python (primary)
+- Node.js/TypeScript
+- Java
+- Go
+- .NET/C#
+- Docker containers
+
+## How would I manage agent versions? (Planned)
+The planned A2A Registry would provide comprehensive versioning:
+- Semantic versioning (1.0.0, 1.1.0, 2.0.0)
+- Version-specific discovery
+- Rollback capabilities
+- Deprecation warnings
+- Compatibility tracking
+- Automated testing per version
+
+## What would be the pricing models? (Planned)
+The planned A2A Registry would offer flexible pricing:
+- **Community**: Free for open-source agents
+- **Professional**: Per-agent publishing fees
+- **Enterprise**: Unlimited agents with SLA
+- **On-premises**: License-based pricing
+
+Contact support@a2areg.com for enterprise pricing.
+
+## How would I integrate A2A Registry with my existing systems? (Planned)
+The planned A2A Registry would provide multiple integration options:
+- **REST API**: Standard HTTP/JSON interface
+- **Python SDK**: Native Python integration
+- **CLI Tools**: Command-line automation
+- **Webhooks**: Event-driven integrations
+- **GraphQL**: Flexible query interface (coming soon)
+
+## What monitoring and analytics would be available? (Planned)
+The planned A2A Registry would provide comprehensive monitoring:
+- Agent usage statistics
+- Performance metrics
+- Error tracking and alerting
+- Usage analytics and reporting
+- Cost tracking and optimization
+- Health monitoring and uptime
+
+## How do I handle agent dependencies?
+A2A Registry manages dependencies through:
+- Dependency declarations in A2A Cards
+- Version compatibility checking
+- Automated dependency resolution
+- Container-based isolation
+- Environment management
+- Conflict detection and resolution
+
+## Can I use A2A Registry for proprietary agents?
+Yes, A2A Registry supports both public and private agents:
+- **Public agents**: Discoverable by all users
+- **Private agents**: Organization-specific access
+- **Licensed agents**: Entitlement-based access
+- **Proprietary agents**: Full access control
+
+## What support would be available? (Planned)
+The planned A2A Registry would offer multiple support channels:
+- **Documentation**: https://a2areg.com/docs
+- **Community Discord**: https://discord.gg/rpe5nMSumw
+- **Email Support**: support@a2areg.com
+- **Planned Enterprise Support**: 24/7 for enterprise customers (when available)
+- **Planned Professional Services**: Custom implementation support (when available)
+
+## How does A2A Registry compare to other platforms?
+A2A Registry differentiates through:
+- **vs. Docker Hub**: AI-specific features and semantic search
+- **vs. Hugging Face**: Enterprise focus and multi-framework support
+- **vs. Custom solutions**: Production-ready with zero setup
+- **vs. Cloud vendors**: Multi-cloud and framework agnostic
+
+## What are the system requirements?
+For hosted SaaS: Just an internet connection and API key
+For on-premises deployment:
+- **Minimum**: 4 CPU cores, 8GB RAM, 100GB storage
+- **Recommended**: 8 CPU cores, 16GB RAM, 500GB SSD
+- **Database**: PostgreSQL 12+
+- **Cache**: Redis 6+
+- **Search**: Elasticsearch 7+
+- **Container**: Docker 20+ or Kubernetes 1.20+
+
+## How can I get started with A2A Registry?
+**Current Options**:
+1. **Visit Website**: https://a2areg.com to learn about the planned platform
+2. **Read Documentation**: https://a2areg.com/docs for detailed specifications
+3. **Join Community**: https://discord.gg/rpe5nMSumw to follow development
+4. **Stay Updated**: Monitor the website for launch announcements
+
+**Future Options (When Platform Launches)**:
+1. **Sign up**: Create account at a2areg.com
+2. **Install SDK**: `pip install a2a-reg-sdk`
+3. **Get API key**: Generate from dashboard
+4. **Publish first agent**: Follow quick start guide
+5. **Explore agents**: Search and discover existing agents
+
+## Where can I find more information?
+- **Website**: https://a2areg.com
+- **Documentation**: https://a2areg.com/docs
+- **API Reference**: https://a2areg.com/docs/api-reference
+- **Python SDK Guide**: https://a2areg.com/docs/python-sdk
+- **Community**: https://discord.gg/rpe5nMSumw
+- **Support**: support@a2areg.com
+- **Security**: security@a2areg.com
