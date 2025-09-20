@@ -33,9 +33,9 @@ const navigationItems = [
 ];
 
 const codeExamples = {
-  installation: `npm install -g @a2areg/publisher`,
-  basicPublish: `a2a-publisher publish ./agent-config.json`,
-  configFile: `{
+  installation: `pip install a2a-publisher`,
+  basicPublish: `a2a-publisher publish ./a2a-card.json`,
+  a2aCard: `{
   "name": "my-ai-agent",
   "version": "1.0.0",
   "description": "An intelligent assistant agent",
@@ -76,7 +76,7 @@ class MyAgent:
   apiPublish: `curl -X POST https://registry.a2areg.com/api/v1/agents \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
-  -d @agent-config.json`
+  -d @a2a-card.json`
 };
 
 export default function Docs() {
@@ -141,8 +141,8 @@ export default function Docs() {
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Publisher?</h3>
                     <p className="text-muted-foreground mb-4">
-                      A2A Publisher is a command-line tool and API that allows developers to publish their AI agents 
-                      to the A2A Registry. It handles agent packaging, validation, and deployment to make your agents 
+                      A2A Publisher is a Python-based command-line tool and API that allows developers to publish their AI agents 
+                      to the A2A Registry. It handles agent packaging, validation, and deployment using A2A Cards to make your agents 
                       discoverable across different frameworks and platforms.
                     </p>
                   </div>
@@ -170,7 +170,7 @@ export default function Docs() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">2. Configure</h3>
-                    <p className="text-sm text-muted-foreground">Create your agent configuration and metadata</p>
+                    <p className="text-sm text-muted-foreground">Create your A2A Card configuration and metadata</p>
                   </div>
                 </div>
               </Card>
@@ -221,12 +221,12 @@ export default function Docs() {
 
             <div className="space-y-6">
               <Card className="p-6">
-                <h2 className="text-2xl font-bold text-foreground mb-4">npm (Recommended)</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-4">pip (Recommended)</h2>
                 <p className="text-muted-foreground mb-4">
-                  Install globally using npm for easy access from any directory.
+                  Install globally using pip for easy access from any directory.
                 </p>
-                <CodeBlock title="Install via npm" language="bash">
-                  npm install -g @a2areg/publisher
+                <CodeBlock title="Install via pip" language="bash">
+                  pip install a2a-publisher
                 </CodeBlock>
               </Card>
 
@@ -237,7 +237,7 @@ export default function Docs() {
                 </p>
                 <CodeBlock title="Run with Docker" language="bash">
 {`docker run -v $(pwd):/workspace \\
-  a2areg/publisher:latest publish /workspace/agent-config.json`}
+  a2areg/publisher:latest publish /workspace/a2a-card.json`}
                 </CodeBlock>
               </Card>
 
@@ -249,9 +249,7 @@ export default function Docs() {
                 <CodeBlock title="Install from Source" language="bash">
 {`git clone https://github.com/A2AReg/a2a-registry.git
 cd a2a-registry/tools/a2a-publisher
-npm install
-npm run build
-npm link`}
+pip install -e .`}
                 </CodeBlock>
               </Card>
             </div>
@@ -264,8 +262,8 @@ npm link`}
                 <div>
                   <h3 className="text-lg font-bold text-foreground mb-2">System Requirements</h3>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                    <li>Node.js 18.x or higher</li>
-                    <li>npm 8.x or higher</li>
+                    <li>Python 3.8 or higher</li>
+                    <li>pip (Python package installer)</li>
                     <li>Git (for source installation)</li>
                     <li>Docker (optional, for containerized usage)</li>
                   </ul>
@@ -296,12 +294,12 @@ npm link`}
             </div>
 
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Agent Configuration File</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">A2A Card Configuration</h2>
               <p className="text-muted-foreground mb-4">
-                Create an <code className="bg-muted px-1 rounded">agent-config.json</code> file in your project root:
+                Create an <code className="bg-muted px-1 rounded">a2a-card.json</code> file in your project root. The A2A Card contains metadata about your agent along with additional configuration:
               </p>
-              <CodeBlock title="agent-config.json" language="json">
-                {codeExamples.configFile}
+              <CodeBlock title="a2a-card.json" language="json">
+                {codeExamples.a2aCard}
               </CodeBlock>
             </Card>
 
@@ -397,8 +395,8 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                       2
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-foreground">Create Configuration</h3>
-                      <p className="text-muted-foreground">Set up your agent-config.json with all required metadata.</p>
+                      <h3 className="text-lg font-semibold text-foreground">Create A2A Card</h3>
+                      <p className="text-muted-foreground">Set up your a2a-card.json with agent metadata and configuration.</p>
                     </div>
                   </div>
                   
@@ -428,7 +426,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Dry Run</h3>
                     <p className="text-muted-foreground mb-2">Validate configuration without publishing:</p>
                     <CodeBlock title="Validate Only" language="bash">
-                      a2a-publisher publish --dry-run ./agent-config.json
+                      a2a-publisher publish --dry-run ./a2a-card.json
                     </CodeBlock>
                   </div>
                   
@@ -436,7 +434,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Custom Registry</h3>
                     <p className="text-muted-foreground mb-2">Publish to a custom registry endpoint:</p>
                     <CodeBlock title="Custom Registry" language="bash">
-                      a2a-publisher publish --registry https://custom.registry.com ./agent-config.json
+                      a2a-publisher publish --registry https://custom.registry.com ./a2a-card.json
                     </CodeBlock>
                   </div>
                   
@@ -444,7 +442,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Force Update</h3>
                     <p className="text-muted-foreground mb-2">Overwrite existing agent version:</p>
                     <CodeBlock title="Force Update" language="bash">
-                      a2a-publisher publish --force ./agent-config.json
+                      a2a-publisher publish --force ./a2a-card.json
                     </CodeBlock>
                   </div>
                 </div>
@@ -565,9 +563,9 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
             <Card className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">TypeScript Agent</h2>
               <p className="text-muted-foreground mb-4">
-                Example configuration for a TypeScript-based agent.
+                Example A2A Card configuration for a TypeScript-based agent.
               </p>
-              <CodeBlock title="agent-config.json" language="json">
+              <CodeBlock title="a2a-card.json (TypeScript)" language="json">
 {`{
   "name": "typescript-assistant",
   "version": "1.2.0",
@@ -602,9 +600,9 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
             <Card className="p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Multi-Framework Agent</h2>
               <p className="text-muted-foreground mb-4">
-                Configuration for an agent that supports multiple AI frameworks.
+                A2A Card configuration for an agent that supports multiple AI frameworks.
               </p>
-              <CodeBlock title="multi-framework-config.json" language="json">
+              <CodeBlock title="a2a-card.json (Multi-Framework)" language="json">
 {`{
   "name": "multi-framework-agent",
   "version": "2.0.0",
