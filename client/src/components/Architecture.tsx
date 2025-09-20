@@ -19,10 +19,10 @@ cd a2a-registry
 docker-compose up -d
 
 # Install Python SDK
-pip install a2a-sdk`,
+pip install a2a-reg-sdk`,
   
   register: `# Register an Agent with Python SDK
-from a2a_sdk import A2AClient, AgentBuilder, AgentCapabilities
+from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities
 
 client = A2AClient(
     registry_url="http://localhost:8000",
