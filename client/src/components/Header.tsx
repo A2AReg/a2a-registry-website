@@ -3,14 +3,21 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Github, MessageCircle, Menu } from "lucide-react";
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [location, setLocation] = useLocation();
   
   const handleNavClick = (section: string) => {
     console.log(`Navigate to ${section} clicked`);
-    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+    if (location === '/') {
+      // On home page, scroll to section
+      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // On other pages, navigate to home with anchor
+      setLocation(`/#${section}`);
+    }
     setOpen(false);
   };
 
@@ -24,12 +31,12 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <div className="flex items-center space-x-2" data-testid="logo-container">
+        <Link href="/" className="flex items-center space-x-2 hover-elevate px-2 py-1 rounded-md" data-testid="logo-container">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-lg">A2A</span>
           </div>
           <span className="text-xl font-semibold text-foreground">Registry</span>
-        </div>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6" data-testid="nav-desktop">
