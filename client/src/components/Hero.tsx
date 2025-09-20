@@ -40,22 +40,22 @@ export default function Hero() {
         <div className="text-center space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20" data-testid="badge-enterprise">
-            Enterprise Agent Registry
+            Enterprise AI Agent Registry - A2A Platform
           </div>
           
           {/* Hero heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground max-w-4xl mx-auto leading-tight tracking-tight" data-testid="text-hero-title">
-            The Agent-to-Agent Registry
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground max-w-4xl mx-auto leading-tight tracking-tight" data-testid="text-hero-title" itemProp="headline">
+            The A2A Registry - Enterprise AI Agent Discovery Platform
           </h1>
           
           {/* Docker Hub comparison */}
           <p className="text-2xl sm:text-3xl font-medium text-primary max-w-2xl mx-auto" data-testid="text-docker-comparison">
-            Docker Hub for AI Agents
+            Docker Hub for AI Agents | Agent-to-Agent Registry
           </p>
           
           {/* Subtitle */}
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
-            Connecting AI agents across frameworks, companies, and clouds to collaborate seamlessly in enterprise environments.
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle" itemProp="description">
+            Publish, discover, and integrate intelligent agents across LangChain, OpenAI, Hugging Face, and enterprise frameworks. Semantic search, OAuth 2.0 security, and cross-registry federation for seamless agent-to-agent collaboration.
           </p>
           
           {/* CTA buttons */}

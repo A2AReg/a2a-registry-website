@@ -15,13 +15,12 @@ export default function Team() {
               Built by Experts
             </Badge>
             
-            <h2 className="text-4xl font-bold text-foreground mb-6" data-testid="text-team-title">
-              Engineered by Amazon & Google Veterans
+            <h2 className="text-4xl font-bold text-foreground mb-6" data-testid="text-team-title" itemProp="headline">
+              A2A Registry - Engineered by Amazon & Google AI Infrastructure Veterans
             </h2>
             
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed" data-testid="text-team-subtitle">
-              The A2A Registry is built by engineers who have designed and scaled 
-              distributed systems at the world's largest technology companies.
+            <p className="text-lg text-muted-foreground mb-8 leading-relaxed" data-testid="text-team-subtitle" itemProp="description">
+              The A2A Registry platform is architected and built by world-class engineers with extensive experience designing distributed AI systems, enterprise agent platforms, semantic search engines, and production-scale infrastructure at Amazon Web Services, Google Cloud, and leading AI companies. Our team brings deep expertise in LangChain, OpenAI integration, enterprise security, and multi-agent system orchestration.
             </p>
             
             {/* Subtle separator line */}

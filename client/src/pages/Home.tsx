@@ -5,10 +5,11 @@ import Team from "@/components/Team";
 import Architecture from "@/components/Architecture";
 import Community from "@/components/Community";
 import Footer from "@/components/Footer";
+import SEOContent from "@/components/SEOContent";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" itemScope itemType="https://schema.org/WebPage">
       <Header />
       <Hero />
       <Features />
@@ -16,6 +17,7 @@ export default function Home() {
       <Architecture />
       <Community />
       <Footer />
+      <SEOContent />
     </div>
   );
 }

@@ -36,23 +36,23 @@ const features = [
 const technicalFeatures = [
   {
     icon: Shield,
-    title: "Enterprise Security",
-    description: "Rate limiting, comprehensive security headers, and enterprise-grade authentication mechanisms."
+    title: "Enterprise-Grade Security & Compliance",
+    description: "Advanced rate limiting, comprehensive security headers, HTTPS enforcement, and enterprise authentication mechanisms. Compliant with SOC 2, GDPR, and industry security standards for AI agent registry deployments."
   },
   {
     icon: Database,
-    title: "Production Ready",
-    description: "Built with PostgreSQL, Redis caching, Elasticsearch search, and automated deployment support."
+    title: "Production-Ready AI Agent Infrastructure",
+    description: "Robust architecture with PostgreSQL databases, Redis caching layers, Elasticsearch semantic search, Docker containerization, Kubernetes orchestration, and automated CI/CD deployment pipelines for scalable A2A Registry operations."
   },
   {
     icon: Users,
-    title: "Modern Web UI",
-    description: "Beautiful, responsive React frontend with dark/light mode and real-time updates."
+    title: "Modern Web Interface & Developer Experience",
+    description: "Intuitive React-based UI with responsive design, dark/light themes, real-time agent status updates, comprehensive search filters, and developer-friendly APIs for seamless AI agent management and discovery workflows."
   },
   {
     icon: Zap,
-    title: "High Performance",
-    description: "Connection pooling, horizontal scaling, and optimized search for enterprise workloads."
+    title: "High-Performance Agent Discovery Engine",
+    description: "Optimized connection pooling, horizontal auto-scaling, load balancing, CDN integration, and lightning-fast semantic search algorithms designed for enterprise-scale AI agent discovery and multi-tenant workloads."
   }
 ];
 
@@ -64,14 +64,14 @@ export default function Features() {
       
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl font-bold text-foreground" data-testid="text-features-title">
-            Core Features
+        <header className="text-center space-y-4 mb-16">
+          <h2 className="text-4xl font-bold text-foreground" data-testid="text-features-title" itemProp="headline">
+            A2A Registry Core Features - AI Agent Discovery & Management
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-features-subtitle">
-            Everything you need for enterprise AI agent discovery and management
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-features-subtitle" itemProp="description">
+            Complete enterprise AI agent platform with semantic search, OAuth 2.0 security, cross-framework support for LangChain, OpenAI, Hugging Face, federation capabilities, and production-ready deployment for intelligent agent discovery and collaboration.
           </p>
-        </div>
+        </header>
         
         {/* Main features grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
