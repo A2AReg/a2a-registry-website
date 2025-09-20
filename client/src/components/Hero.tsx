@@ -40,7 +40,7 @@ export default function Hero() {
         <div className="text-center space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20" data-testid="badge-enterprise">
-            Enterprise Agent Discovery
+            Enterprise Agent Registry
           </div>
           
           {/* Hero heading */}
