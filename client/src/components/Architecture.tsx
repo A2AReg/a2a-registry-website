@@ -72,7 +72,7 @@ is_public: true
 location_url: "https://api.my-company.com/chatbot"
 
 # 4. Publish the agent
-a2a-publisher publish my-agent.yaml
+a2a-reg-sdk publish my-agent.yaml
 
 # 5. List and manage agents
 a2a-publisher list

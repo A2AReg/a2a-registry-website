@@ -36,7 +36,7 @@ const navigationItems = [
 
 const codeExamples = {
   installation: `pip install a2a-reg-sdk`,
-  basicPublish: `a2a-publisher publish ./a2a-card.json`,
+  basicPublish: `a2a-reg-sdk publish ./a2a-card.json`,
   sdkInstallation: `pip install a2a-reg-sdk`,
   sdkBasicUsage: `from a2a_reg_sdk import A2ARegistry, AgentCard
 
@@ -896,7 +896,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Dry Run</h3>
                     <p className="text-muted-foreground mb-2">Validate configuration without publishing:</p>
                     <CodeBlock title="Validate Only" language="bash">
-                      a2a-publisher publish --dry-run ./a2a-card.json
+                      a2a-reg-sdk publish --dry-run ./a2a-card.json
                     </CodeBlock>
                   </div>
                   
@@ -904,7 +904,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Custom Registry</h3>
                     <p className="text-muted-foreground mb-2">Publish to a custom registry endpoint:</p>
                     <CodeBlock title="Custom Registry" language="bash">
-                      a2a-publisher publish --registry https://custom.registry.com ./a2a-card.json
+                      a2a-reg-sdk publish --registry https://custom.registry.com ./a2a-card.json
                     </CodeBlock>
                   </div>
                   
@@ -912,7 +912,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                     <h3 className="text-lg font-semibold text-foreground mb-2">Force Update</h3>
                     <p className="text-muted-foreground mb-2">Overwrite existing agent version:</p>
                     <CodeBlock title="Force Update" language="bash">
-                      a2a-publisher publish --force ./a2a-card.json
+                      a2a-reg-sdk publish --force ./a2a-card.json
                     </CodeBlock>
                   </div>
                 </div>
