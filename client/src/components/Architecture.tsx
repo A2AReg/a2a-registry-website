@@ -19,7 +19,10 @@ cd a2a-registry
 docker-compose up -d
 
 # Install Python SDK
-pip install a2a-reg-sdk`,
+pip install a2a-reg-sdk
+
+# Install CLI Publisher Tool  
+pip install a2a-publisher`,
   
   register: `# Register an Agent with Python SDK
 from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities
@@ -46,6 +49,32 @@ agent = (
 
 published_agent = client.publish_agent(agent)
 print(f"Agent published with ID: {published_agent.id}")`,
+  
+  publisher: `# Publish with CLI Tool (easier workflow)
+# 1. Set up authentication
+export A2A_REGISTRY_URL="http://localhost:8000"
+export A2A_CLIENT_ID="your-client-id"  
+export A2A_CLIENT_SECRET="your-client-secret"
+
+# 2. Initialize agent configuration
+a2a-publisher init --output my-agent.yaml
+
+# 3. Edit my-agent.yaml:
+name: "my-chatbot"
+description: "An AI chatbot agent"  
+version: "1.0.0"
+provider: "my-company"
+tags: ["ai", "chatbot", "assistant"]
+is_public: true
+location_url: "https://api.my-company.com/chatbot"
+
+# 4. Publish the agent
+a2a-publisher publish my-agent.yaml
+
+# 5. List and manage agents
+a2a-publisher list
+a2a-publisher update agent-123 updated-agent.yaml
+a2a-publisher delete agent-123`,
   
   search: `# Search for Agents
 # Basic search
@@ -191,6 +220,36 @@ export default function Architecture() {
               </div>
               <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground max-h-48 overflow-y-auto">
                 <code>{codeExamples.register}</code>
+              </pre>
+            </Card>
+            
+            {/* CLI Publisher Tool */}
+            <Card className="p-6 bg-muted border-card-border">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-cli-publisher-title">
+                    CLI Publisher Tool
+                  </h4>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry/tree/main/tools/a2a-publisher', 'Publisher Tool')}
+                    data-testid="button-view-publisher"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => copyToClipboard(codeExamples.publisher, 'CLI Publisher')}
+                  data-testid="button-copy-publisher"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+              <pre className="text-sm bg-background p-4 rounded-lg overflow-x-auto font-mono text-foreground max-h-48 overflow-y-auto">
+                <code>{codeExamples.publisher}</code>
               </pre>
             </Card>
             
