@@ -44,7 +44,7 @@ export default function Hero() {
           
           {/* Docker Hub comparison */}
           <p className="text-xl sm:text-2xl font-medium text-muted-foreground max-w-2xl mx-auto" data-testid="text-docker-comparison">
-            It's like Docker Hub for AI Agents
+            Docker Hub for AI Agents
           </p>
           
           {/* Subtitle */}
