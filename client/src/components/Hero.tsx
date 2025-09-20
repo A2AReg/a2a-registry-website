@@ -45,7 +45,7 @@ export default function Hero() {
           
           {/* Hero heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground max-w-4xl mx-auto leading-tight tracking-tight" data-testid="text-hero-title" itemProp="headline">
-            The A2A Registry - Enterprise AI Agent Discovery Platform
+            The Agent2Agent Registry
           </h1>
           
           {/* Docker Hub comparison */}

@@ -8,7 +8,7 @@ export default function SEOContent() {
     <section className="sr-only" aria-hidden="true">
       {/* Comprehensive A2A Registry Description for Search Engines */}
       <article itemScope itemType="https://schema.org/SoftwareApplication">
-        <h1 itemProp="name">A2A Registry - Enterprise AI Agent Discovery Platform</h1>
+        <h1 itemProp="name">The Agent2Agent Registry</h1>
         
         <div itemProp="description">
           <p>

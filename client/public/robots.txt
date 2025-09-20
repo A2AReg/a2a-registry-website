@@ -1,4 +1,4 @@
-# A2A Registry - Enterprise AI Agent Discovery Platform
+# The Agent2Agent Registry
 # Robots.txt for search engine optimization
 
 User-agent: *
