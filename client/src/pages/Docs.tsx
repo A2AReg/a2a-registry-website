@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import Header from "@/components/Header";
 import { 
   BookOpen, 
   Download, 
@@ -861,23 +862,44 @@ echo ".git/" >> .a2aignore`}
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top separator */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+      <Header />
       
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Navigation Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-8">
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-6">
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            {/* Mobile: Horizontal scrolling nav */}
+            <div className="lg:hidden mb-6">
+              <ScrollArea className="w-full whitespace-nowrap">
+                <div className="flex space-x-2 p-1">
+                  {navigationItems.map((item) => (
+                    <Button
+                      key={item.id}
+                      variant={activeSection === item.id ? "secondary" : "ghost"}
+                      size="sm"
+                      className="flex-shrink-0 hover-elevate"
+                      onClick={() => setActiveSection(item.id)}
+                      data-testid={`nav-mobile-${item.id}`}
+                    >
+                      <item.icon className="mr-1 h-3 w-3" />
+                      <span className="text-xs">{item.label}</span>
+                    </Button>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+            
+            {/* Desktop: Sticky sidebar */}
+            <Card className="hidden lg:block sticky top-24">
+              <div className="p-4 lg:p-6">
+                <div className="flex items-center gap-2 mb-4 lg:mb-6">
                   <div className="text-primary p-2 bg-primary/10 rounded-md">
                     <BookOpen className="h-5 w-5" />
                   </div>
-                  <h2 className="text-xl font-bold text-foreground">Documentation</h2>
+                  <h2 className="text-lg lg:text-xl font-bold text-foreground">Documentation</h2>
                 </div>
                 
-                <ScrollArea className="h-[calc(100vh-12rem)]">
+                <ScrollArea className="h-[calc(100vh-16rem)]">
                   <nav className="space-y-2">
                     {navigationItems.map((item) => (
                       <Button
@@ -901,9 +923,9 @@ echo ".git/" >> .a2aignore`}
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 order-1 lg:order-2">
             <Card className="min-h-[80vh]">
-              <div className="p-8">
+              <div className="p-4 sm:p-6 lg:p-8">
                 {renderContent()}
               </div>
             </Card>

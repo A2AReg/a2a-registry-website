@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "wouter";
 import { 
   Github, 
   MessageCircle, 
@@ -29,7 +30,7 @@ const communityLinks = [
     icon: BookOpen,
     title: "Documentation",
     description: "Complete API documentation and guides",
-    url: "https://github.com/A2AReg/a2a-registry#api-usage"
+    url: "/docs"
   },
   {
     icon: Users,
@@ -58,9 +59,9 @@ const enterpriseFeatures = [
 ];
 
 export default function Community() {
-  const handleLinkClick = (url: string, title: string) => {
+  const handleExternalLinkClick = (url: string, title: string) => {
     console.log(`${title} clicked`);
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -139,12 +140,36 @@ export default function Community() {
             
             <div className="space-y-4">
               {communityLinks.map((link, index) => (
-                <Card 
-                  key={link.title} 
-                  className="p-6 hover-elevate cursor-pointer border border-border/50"
-                  onClick={() => handleLinkClick(link.url, link.title)}
-                  data-testid={`card-community-${link.title.toLowerCase().replace(/\s+/g, '-')}`}
-                >
+                link.url.startsWith('/') ? (
+                  <Link href={link.url} key={link.title}>
+                    <Card 
+                      className="p-6 hover-elevate cursor-pointer border border-border/50"
+                      data-testid={`card-community-${link.title.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-primary p-2 bg-primary/10 rounded-md">
+                            <link.icon className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold text-foreground">
+                              {link.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {link.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                ) : (
+                  <Card 
+                    key={link.title} 
+                    className="p-6 hover-elevate cursor-pointer border border-border/50"
+                    onClick={() => handleExternalLinkClick(link.url, link.title)}
+                    data-testid={`card-community-${link.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="text-muted-foreground p-2 bg-muted/50 rounded-md">
@@ -162,6 +187,7 @@ export default function Community() {
                     <ExternalLink className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </Card>
+                )
               ))}
             </div>
             
@@ -178,7 +204,7 @@ export default function Community() {
                 <Button 
                   variant="default" 
                   className="hover-elevate active-elevate-2"
-                  onClick={() => handleLinkClick('https://github.com/A2AReg/a2a-registry/blob/main/CONTRIBUTING.md', 'Contributing Guide')}
+                  onClick={() => handleExternalLinkClick('https://github.com/A2AReg/a2a-registry/blob/main/CONTRIBUTING.md', 'Contributing Guide')}
                   data-testid="button-contributing-guide"
                 >
                   <Github className="mr-2 h-4 w-4" />

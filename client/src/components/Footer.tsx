@@ -1,10 +1,11 @@
 import { Github, MessageCircle, ExternalLink } from "lucide-react";
+import { Link } from "wouter";
 
 const footerLinks = {
   product: [
     { name: "Features", href: "#features" },
     { name: "Getting Started", href: "#getting-started" },
-    { name: "API Documentation", href: "https://github.com/A2AReg/a2a-registry#api-usage", external: true },
+    { name: "API Documentation", href: "/docs", external: false },
     { name: "Production Guide", href: "https://github.com/A2AReg/a2a-registry/blob/main/PRODUCTION.md", external: true }
   ],
   community: [
@@ -25,13 +26,12 @@ export default function Footer() {
   const handleLinkClick = (href: string, name: string, external: boolean = false) => {
     console.log(`Footer link ${name} clicked`);
     if (external) {
-      window.open(href, '_blank');
+      window.open(href, '_blank', 'noopener,noreferrer');
     } else {
       if (href.startsWith('#')) {
         document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.location.href = href;
       }
+      // For internal routes like /docs, let Link component handle navigation
     }
   };
 
@@ -76,14 +76,32 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
-                  <button 
-                    onClick={() => handleLinkClick(link.href, link.name, link.external)}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 hover-elevate px-1 py-1 rounded-md"
-                    data-testid={`footer-product-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    {link.name}
-                    {link.external && <ExternalLink className="h-3 w-3" />}
-                  </button>
+                  {link.external ? (
+                    <button 
+                      onClick={() => handleLinkClick(link.href, link.name, link.external)}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 hover-elevate px-1 py-1 rounded-md"
+                      data-testid={`footer-product-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {link.name}
+                      <ExternalLink className="h-3 w-3" />
+                    </button>
+                  ) : link.href.startsWith('#') ? (
+                    <button 
+                      onClick={() => handleLinkClick(link.href, link.name, link.external)}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 hover-elevate px-1 py-1 rounded-md"
+                      data-testid={`footer-product-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link 
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 hover-elevate px-1 py-1 rounded-md"
+                      data-testid={`footer-product-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
