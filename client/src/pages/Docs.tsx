@@ -635,7 +635,7 @@ export default function Docs() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">1. Install</h3>
-                    <p className="text-sm text-muted-foreground">Install the A2A Publisher CLI globally on your system</p>
+                    <p className="text-sm text-muted-foreground">Install the A2A SDK CLI globally on your system</p>
                   </div>
                 </div>
               </Card>
