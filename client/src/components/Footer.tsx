@@ -48,7 +48,7 @@ export default function Footer() {
               <span className="text-xl font-semibold text-foreground">Registry</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs" data-testid="footer-description">
-              Enterprise AI agent discovery platform implementing the A2A Agent Registry Proposal.
+              The Agent-to-Agent Registry enables seamless communication and collaboration between diverse agent frameworks.
             </p>
             <div className="flex space-x-4">
               <button 
@@ -137,14 +137,8 @@ export default function Footer() {
           <p className="text-sm text-muted-foreground" data-testid="footer-copyright">
             © 2025 A2A Registry. Licensed under Apache 2.0.
           </p>
-          <p className="text-sm text-muted-foreground mt-4 sm:mt-0" data-testid="footer-proposal">
-            Built on the{" "}
-            <button 
-              onClick={() => handleLinkClick('https://github.com/a2aproject/A2A/discussions/741', 'A2A Agent Registry Proposal', true)}
-              className="text-primary hover:underline"
-            >
-              A2A Agent Registry Proposal
-            </button>
+          <p className="text-sm text-muted-foreground mt-4 sm:mt-0" data-testid="footer-tagline">
+            Enabling seamless agent-to-agent collaboration
           </p>
         </div>
       </div>

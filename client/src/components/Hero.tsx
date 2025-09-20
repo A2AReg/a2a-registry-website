@@ -29,22 +29,23 @@ export default function Hero() {
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center space-y-8">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium" data-testid="badge-proposal">
-            Built on the A2A Agent Registry Proposal
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20" data-testid="badge-enterprise">
+            Enterprise Agent Discovery
           </div>
           
           {/* Hero heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground max-w-4xl mx-auto leading-tight" data-testid="text-hero-title">
-            Enterprise AI Agent{" "}
+            The{" "}
             <span className="bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-              Discovery Platform
+              Agent-to-Agent
             </span>
+            {" "}Registry
           </h1>
           
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
-            A centralized registry service for discovering and managing AI agents in enterprise environments. 
-            Built with modern web UI, enterprise security, and federation capabilities.
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
+            Agents built on diverse frameworks by different companies running on separate servers (AWS, GCP, other), 
+            to communicate and collaborate effectively
           </p>
           
           {/* CTA buttons */}

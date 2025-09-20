@@ -29,9 +29,9 @@ const communityLinks = [
   },
   {
     icon: BookOpen,
-    title: "A2A Proposal",
-    description: "Original Agent Registry Proposal discussion",
-    url: "https://github.com/a2aproject/A2A/discussions/741",
+    title: "Documentation",
+    description: "Complete API documentation and guides",
+    url: "https://github.com/A2AReg/a2a-registry#api-usage",
     color: "text-chart-2"
   },
   {

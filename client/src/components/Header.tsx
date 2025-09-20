@@ -27,24 +27,24 @@ export default function Header() {
         <nav className="hidden md:flex items-center space-x-6" data-testid="nav-desktop">
           <button 
             onClick={() => handleNavClick('features')}
-            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-2 py-1 rounded-md"
+            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-3 py-2 rounded-md"
             data-testid="nav-features"
           >
             Features
           </button>
           <button 
             onClick={() => handleNavClick('getting-started')}
-            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-2 py-1 rounded-md"
+            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-3 py-2 rounded-md"
             data-testid="nav-getting-started"
           >
             Getting Started
           </button>
           <button 
-            onClick={() => handleExternalLink('https://github.com/a2aproject/A2A/discussions/741', 'Proposal')}
-            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-2 py-1 rounded-md"
-            data-testid="nav-proposal"
+            onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry#api-usage', 'Documentation')}
+            className="text-muted-foreground hover:text-foreground transition-colors hover-elevate px-3 py-2 rounded-md"
+            data-testid="nav-documentation"
           >
-            Proposal
+            Documentation
           </button>
         </nav>
         
