@@ -120,11 +120,11 @@ export default function Architecture() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Architecture Overview */}
           <div className="space-y-8">
-            <div className="space-y-4">
+            <div className="space-y-4 text-center">
               <h2 className="text-4xl font-bold text-foreground" data-testid="text-architecture-title">
                 Enterprise Architecture
               </h2>
-              <p className="text-lg text-muted-foreground" data-testid="text-architecture-subtitle">
+              <p className="text-lg text-muted-foreground mx-auto" data-testid="text-architecture-subtitle">
                 Built with modern technologies for scalability, security, and performance in enterprise environments.
               </p>
             </div>

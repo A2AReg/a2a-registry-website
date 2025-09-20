@@ -61,11 +61,11 @@ export default function Features() {
     <section className="py-24 bg-muted/30" id="features">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-left space-y-4 mb-16">
+        <div className="text-center space-y-4 mb-16">
           <h2 className="text-4xl font-bold text-foreground" data-testid="text-features-title">
             Core Features
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl" data-testid="text-features-subtitle">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-features-subtitle">
             Everything you need for enterprise AI agent discovery and management
           </p>
         </div>

@@ -69,11 +69,11 @@ export default function Community() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Enterprise Benefits */}
           <div className="space-y-8">
-            <div className="space-y-4">
+            <div className="space-y-4 text-center">
               <h2 className="text-4xl font-bold text-foreground" data-testid="text-enterprise-title">
                 Enterprise Ready
               </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl" data-testid="text-enterprise-subtitle">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-enterprise-subtitle">
                 Built for enterprise environments with security, scalability, and reliability at its core.
               </p>
             </div>
@@ -125,11 +125,11 @@ export default function Community() {
           
           {/* Community Links */}
           <div className="space-y-8">
-            <div className="space-y-4">
+            <div className="space-y-4 text-center">
               <h2 className="text-4xl font-bold text-foreground" data-testid="text-community-title">
                 Community & Resources
               </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl" data-testid="text-community-subtitle">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto" data-testid="text-community-subtitle">
                 Join our community and explore the resources to get the most out of A2A Registry.
               </p>
             </div>
