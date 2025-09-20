@@ -13,16 +13,26 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/30">
-      {/* Background pattern */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Modern gradient background similar to BelArabyAI */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-chart-2/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-chart-3/5 to-transparent"></div>
+      
+      {/* Animated gradient orbs */}
+      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-gradient-to-r from-primary/20 to-chart-2/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/3 -right-32 w-80 h-80 bg-gradient-to-r from-chart-3/15 to-chart-4/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-chart-1/10 to-chart-5/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+      
+      {/* Subtle mesh overlay */}
       <div 
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]"
         style={{
           backgroundImage: `
-            linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px),
-            linear-gradient(hsl(var(--border)) 1px, transparent 1px)
+            radial-gradient(circle at 25% 25%, hsl(var(--primary)) 2px, transparent 2px),
+            radial-gradient(circle at 75% 75%, hsl(var(--chart-2)) 1px, transparent 1px)
           `,
-          backgroundSize: '60px 60px'
+          backgroundSize: '100px 100px'
         }}
       ></div>
       
