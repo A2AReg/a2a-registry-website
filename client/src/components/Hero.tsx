@@ -44,8 +44,7 @@ export default function Hero() {
           
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
-            Agents built on diverse frameworks by different companies running on separate servers (AWS, GCP, other), 
-            to communicate and collaborate effectively
+            Connecting AI agents across frameworks, companies, and clouds (AWS, GCP, others) to collaborate seamlessly.
           </p>
           
           {/* CTA buttons */}
