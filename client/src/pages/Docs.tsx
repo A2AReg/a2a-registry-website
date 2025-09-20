@@ -685,7 +685,7 @@ export default function Docs() {
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-4">Installation</h1>
               <p className="text-lg text-muted-foreground mb-6">
-                Multiple ways to install and set up the A2A Publisher tool on your system.
+                Multiple ways to install and set up the A2A Registry tool on your system.
               </p>
             </div>
 
