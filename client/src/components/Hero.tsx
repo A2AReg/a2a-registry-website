@@ -42,6 +42,11 @@ export default function Hero() {
             {" "}Registry
           </h1>
           
+          {/* Docker Hub comparison */}
+          <p className="text-xl sm:text-2xl font-medium text-muted-foreground max-w-2xl mx-auto" data-testid="text-docker-comparison">
+            It's like Docker Hub for AI Agents
+          </p>
+          
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-subtitle">
             Connecting AI agents across frameworks, companies, and clouds (AWS, GCP, others) to collaborate seamlessly.
