@@ -607,7 +607,7 @@ export default function Docs() {
                     <BookOpen className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Publisher?</h3>
+                    <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Registry?</h3>
                     <p className="text-muted-foreground mb-4">
                       A2A Publisher is a Python-based command-line tool and API that allows developers to publish their AI agents 
                       to the A2A Registry. It handles agent packaging, validation, and deployment using A2A Cards to make your agents 
