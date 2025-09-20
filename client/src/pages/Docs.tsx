@@ -707,7 +707,7 @@ export default function Docs() {
                 </p>
                 <CodeBlock title="Run with Docker" language="bash">
 {`docker run -v $(pwd):/workspace \\
-  a2areg/publisher:latest publish /workspace/a2a-card.json`}
+  a2areg/registry:latest publish /workspace/a2a-card.json`}
                 </CodeBlock>
               </Card>
 
