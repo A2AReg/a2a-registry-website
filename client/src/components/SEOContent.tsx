@@ -12,7 +12,7 @@ export default function SEOContent() {
         
         <div itemProp="description">
           <p>
-            A2A Registry is the leading enterprise-grade AI agent discovery platform, often referred to as the "Docker Hub for AI Agents." 
+            A2A Registry is the leading enterprise-grade AI agent discovery platform, often referred to as the "Docker Hub for A2A Agents." 
             Our platform enables organizations to publish, discover, and integrate intelligent agents across multiple frameworks including 
             LangChain, OpenAI, Hugging Face, Amazon Bedrock, Google Vertex AI, Microsoft Azure OpenAI, and custom enterprise AI systems.
           </p>

@@ -50,7 +50,7 @@ export default function Hero() {
           
           {/* Docker Hub comparison */}
           <p className="text-2xl sm:text-3xl font-medium text-primary max-w-2xl mx-auto" data-testid="text-docker-comparison">
-            Docker Hub for AI Agents | Agent-to-Agent Registry
+            Docker Hub for A2A Agents
           </p>
           
           {/* Subtitle */}
