@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Github, MessageCircle } from "lucide-react";
 
 export default function Header() {
@@ -68,6 +69,7 @@ export default function Header() {
             <Github className="h-4 w-4" />
             <span className="hidden sm:inline ml-2">GitHub</span>
           </Button>
+          <ThemeToggle />
         </div>
       </div>
     </header>
