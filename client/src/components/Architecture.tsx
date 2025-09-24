@@ -1,329 +1,391 @@
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Copy, ExternalLink } from "lucide-react";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useTheme } from "@/components/theme-provider";
-
-const architectureComponents = [
-  { name: "React 18", description: "Modern frontend with TypeScript" },
-  { name: "FastAPI", description: "High-performance Python backend" },
-  { name: "PostgreSQL", description: "Reliable data persistence" },
-  { name: "Elasticsearch", description: "Advanced search capabilities" },
-  { name: "Redis", description: "High-speed caching layer" },
-  { name: "Docker", description: "Containerized deployment" }
-];
-
-const codeExamples = {
-  install: `# Quick start with Docker
-git clone https://github.com/A2AReg/a2a-registry.git
-cd a2a-registry
-docker-compose up -d
-
-# Install Python SDK
-pip install a2a-reg-sdk
-
-# Install CLI Publisher Tool  
-pip install a2a-reg-sdk`,
-  
-  register: `# Register an Agent with Python SDK
-from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities
-
-client = A2AClient(
-    registry_url="http://localhost:8000",
-    client_id=os.getenv("A2A_CLIENT_ID"),
-    client_secret=os.getenv("A2A_CLIENT_SECRET"),
-)
-
-# Create and publish agent
-agent = (
-    AgentBuilder(
-        "my-test-agent", 
-        "A test agent for demonstration", 
-        "1.0.0", 
-        "my-org"
-    )
-    .with_tags(["test", "demo", "ai"])
-    .with_location("https://my-org.com/api/agent")
-    .public(True)
-    .build()
-)
-
-published_agent = client.publish_agent(agent)
-print(f"Agent published with ID: {published_agent.id}")`,
-  
-  publisher: `# Publish with CLI Tool (easier workflow)
-# 1. Set up authentication
-export A2A_REGISTRY_URL="http://localhost:8000"
-export A2A_CLIENT_ID="your-client-id"  
-export A2A_CLIENT_SECRET="your-client-secret"
-
-# 2. Initialize agent configuration
-a2a-publisher init --output my-agent.yaml
-
-# 3. Edit my-agent.yaml:
-name: "my-chatbot"
-description: "An AI chatbot agent"  
-version: "1.0.0"
-provider: "my-company"
-tags: ["ai", "chatbot", "assistant"]
-is_public: true
-location_url: "https://api.my-company.com/chatbot"
-
-# 4. Publish the agent
-a2a-reg publish my-agent.yaml
-
-# 5. List and manage agents
-a2a-publisher list
-a2a-publisher update agent-123 updated-agent.yaml
-a2a-publisher delete agent-123`,
-  
-  search: `# Search for Agents
-# Basic search
-agents = client.list_agents(page=1, limit=10)
-print(f"Found {len(agents.get('agents', []))} public agents")
-
-# Advanced semantic search  
-search_results = client.search_agents(
-    query="AI assistant with natural language processing",
-    filters={"tags": ["ai", "nlp"], "provider": "my-org"},
-    semantic=True,
-    page=1, 
-    limit=5
-)
-
-for agent in search_results.get('agents', []):
-    print(f"- {agent.name}: {agent.description}")
-    print(f"  Tags: {', '.join(agent.tags)}")
-    print(f"  Provider: {agent.provider}")`
-};
+import { useState } from "react";
+import { Card } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Copy, Check, Code, Download, Plus, Search, Terminal, Sparkles } from "lucide-react";
 
 export default function Architecture() {
-  const { theme } = useTheme();
-  const prefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isDark = theme === 'dark' || (theme === 'system' && prefersDark);
-  
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    console.log(`${label} code copied to clipboard`);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const handleCopyCode = async (code: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCode(id);
+      setTimeout(() => setCopiedCode(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy code:", err);
+    }
   };
 
-  const handleExternalLink = (url: string, label: string) => {
-    console.log(`${label} link clicked`);
-    window.open(url, '_blank');
+
+const codeExamples = {
+    installation: `# Install the A2A Registry SDK
+pip install a2a-reg-sdk
+
+# Verify installation
+python -c "import a2a_reg_sdk; print('SDK installed successfully!')"`,
+
+    register: `# Advanced Agent Registration
+from a2a_reg_sdk import (
+    A2AClient, Agent, AgentCard, AgentCapabilities,
+    AuthScheme, AgentPublisher
+)
+
+# Initialize registry client
+client = A2AClient(
+    registry_url="https://registry.a2areg.com",
+    client_id="your-client-id",
+    client_secret="your-client-secret"
+)
+
+# Create agent card
+agent_card = AgentCard(
+    name="My AI Assistant",
+    description="An intelligent assistant for natural language processing",
+    version="1.0.0",
+    author="Your Organization"
+)
+
+# Create agent with capabilities
+agent = Agent(
+    name="my-ai-assistant",
+    description="Intelligent NLP assistant",
+    version="1.0.0",
+    provider="Your Organization",
+    location_url="https://api.example.com/agent",
+    capabilities=AgentCapabilities(
+        extensions=[
+            {
+                "uri": "https://example.com/extensions/nlp",
+                "required": True,
+                "description": "Natural language processing capabilities"
+            }
+        ],
+        pushNotifications=True,
+        streaming=False
+    ),
+    auth_schemes=[
+        AuthScheme(
+            type="api_key",
+            description="API key authentication",
+            required=True,
+            headerName="X-API-Key"
+        )
+    ],
+    agent_card=agent_card
+)
+
+# Create publisher and publish agent
+publisher = AgentPublisher(client)
+result = publisher.publish(agent)
+
+print(f"Agent published successfully!")
+print(f"Agent ID: {result.get('agent_id', 'N/A')}")
+print(f"Registry URL: {result.get('registry_url', 'N/A')}")`,
+
+    search: `# Advanced Agent Discovery
+from a2a_reg_sdk import A2AClient
+
+# Initialize client
+client = A2AClient(
+    registry_url="https://registry.a2areg.com",
+    client_id="your-client-id",
+    client_secret="your-client-secret"
+)
+
+# Search for agents with filters
+agents = client.search_agents(
+    query="AI assistant",
+    capabilities=["text-generation", "question-answering"],
+    tags=["nlp", "enterprise"],
+    version_min="1.0.0",
+    limit=10
+)
+
+print(f"Found {len(agents)} agents:")
+for agent in agents:
+    print(f"- {agent.name} v{agent.version}")
+    print(f"  Provider: {agent.provider}")
+    print(f"  Description: {agent.description}")
+    print(f"  Capabilities: {agent.capabilities}")
+    print(f"  Location: {agent.location_url}")
+    print()`,
   };
 
   return (
-    <section className="py-24 bg-background relative" id="getting-started">
-      {/* Top separator */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
-      
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Architecture Overview */}
-          <div className="space-y-8">
-            <div className="space-y-4 text-center">
-              <h2 className="text-4xl font-bold text-foreground" data-testid="text-architecture-title">
-                Enterprise Architecture
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-muted/20 to-background">
+      <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center space-y-4 sm:space-y-6 mb-12 sm:mb-16 md:mb-20">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-card border border-border shadow-sm">
+            <Badge variant="secondary" className="bg-blue-100 dark:bg-primary/10 text-blue-600 dark:text-primary border-blue-200 dark:border-primary/20 px-3 py-1 text-sm">
+              <div className="relative">
+                <Code className="w-3 h-3 mr-1 sm:w-4 sm:h-4 sm:mr-2" />
+                <Sparkles className="absolute -top-1 -right-1 w-2 h-2 text-yellow-500 animate-pulse" />
+              </div>
+              Architecture & SDK
+            </Badge>
+          </div>
+          
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
+            Modern Architecture
               </h2>
-              <p className="text-lg text-muted-foreground mx-auto" data-testid="text-architecture-subtitle">
-                Built with modern technologies for scalability, security, and performance in enterprise environments.
+          
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Built with modern technologies and designed for enterprise scale
               </p>
             </div>
             
-            {/* Technology stack */}
-            <div className="grid grid-cols-2 gap-4">
-              {architectureComponents.map((component, index) => (
-                <Card 
-                  key={component.name} 
-                  className="p-4 hover-elevate"
-                  data-testid={`card-tech-${component.name.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  <div className="space-y-2">
-                    <Badge variant="secondary" className="font-medium">
-                      {component.name}
-                    </Badge>
-                    <p className="text-sm text-muted-foreground">
-                      {component.description}
-                    </p>
-                  </div>
-                </Card>
-              ))}
-            </div>
-            
-            {/* Key endpoints */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground" data-testid="text-endpoints-title">
-                API Endpoints
+
+        {/* Code Examples */}
+        <div className="space-y-8 sm:space-y-12">
+          <div className="text-center space-y-3 sm:space-y-4">
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+              Get Started in Minutes
               </h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2" data-testid="endpoint-entitled">
-                  <Badge variant="outline" className="font-mono text-xs">GET</Badge>
-                  <code className="text-muted-foreground">/agents/entitled</code>
-                  <span className="text-muted-foreground text-xs">- Get entitled agents</span>
-                </div>
-                <div className="flex items-center gap-2" data-testid="endpoint-search">
-                  <Badge variant="outline" className="font-mono text-xs">POST</Badge>
-                  <code className="text-muted-foreground">/agents/search</code>
-                  <span className="text-muted-foreground text-xs">- Search agents</span>
-                </div>
-                <div className="flex items-center gap-2" data-testid="endpoint-public">
-                  <Badge variant="outline" className="font-mono text-xs">GET</Badge>
-                  <code className="text-muted-foreground">/agents/public</code>
-                  <span className="text-muted-foreground text-xs">- Public discovery</span>
-                </div>
-              </div>
-            </div>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Simple, powerful SDK for agent registration and discovery
+            </p>
           </div>
           
-          {/* Code Examples */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-foreground" data-testid="text-getting-started-title">
-              Getting Started
-            </h3>
-            
-            {/* Installation */}
-            <Card className="p-6 bg-muted border border-border/50">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-quick-start-title">
-                  Quick Start
-                </h4>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => copyToClipboard(codeExamples.install, 'Installation')}
-                  data-testid="button-copy-install"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
+          <Tabs defaultValue="installation" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 bg-card border border-border">
+              <TabsTrigger value="installation" className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-primary/10 data-[state=active]:text-blue-600 dark:data-[state=active]:text-primary text-sm flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Installation
+              </TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-primary/10 data-[state=active]:text-blue-600 dark:data-[state=active]:text-primary text-sm flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Register Agent
+              </TabsTrigger>
+              <TabsTrigger value="search" className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-primary/10 data-[state=active]:text-blue-600 dark:data-[state=active]:text-primary text-sm flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                Discover Agents
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="installation" className="mt-4 sm:mt-6">
+              <Card className="bg-card border border-border shadow-sm p-0 overflow-hidden">
+                <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border">
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1">
+                      <Terminal className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full animate-pulse delay-100"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse delay-200"></div>
+                    </div>
               </div>
-              <SyntaxHighlighter 
-                language="bash"
-                style={isDark ? oneDark : oneLight}
-                customStyle={{
-                  margin: 0,
-                  borderRadius: '0.5rem',
-                  fontSize: '0.875rem',
-                }}
-              >
-                {codeExamples.install}
-              </SyntaxHighlighter>
-            </Card>
-            
-            {/* Register Agent */}
-            <Card className="p-6 bg-muted border border-border/50">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-register-agent-title">
-                    Register an Agent
-                  </h4>
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry/tree/main/examples/python', 'Python Examples')}
-                    data-testid="button-view-examples"
+                    onClick={() => handleCopyCode(codeExamples.installation, "installation")}
+                    className="text-muted-foreground hover:text-foreground h-8 w-8 p-0 transition-all duration-200 hover:scale-110"
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    {copiedCode === "installation" ? (
+                      <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 animate-in zoom-in-50 duration-200" />
+                    ) : (
+                      <Copy className="w-3 h-3 sm:w-4 sm:h-4 hover:text-blue-600 dark:hover:text-primary transition-colors duration-200" />
+                    )}
                   </Button>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => copyToClipboard(codeExamples.register, 'Register agent')}
-                  data-testid="button-copy-register"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="max-h-48 overflow-y-auto rounded-lg">
-                <SyntaxHighlighter 
-                  language="python"
-                  style={isDark ? oneDark : oneLight}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  {codeExamples.register}
-                </SyntaxHighlighter>
-              </div>
+                <pre className="p-3 sm:p-4 md:p-6 text-xs sm:text-sm font-mono text-foreground overflow-x-auto">
+                  <code className="text-foreground">
+                    <span className="text-blue-600 dark:text-blue-400"># Install the A2A Registry SDK</span>
+                    <br />
+                    <span className="text-green-600 dark:text-green-400">pip</span> <span className="text-purple-600 dark:text-purple-400">install</span> <span className="text-orange-600 dark:text-orange-400">a2a-reg-sdk</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Verify installation</span>
+                    <br />
+                    <span className="text-green-600 dark:text-green-400">python</span> <span className="text-purple-600 dark:text-purple-400">-c</span> <span className="text-yellow-600 dark:text-yellow-400">"import a2a_reg_sdk; print('SDK installed successfully!')"</span>
+                  </code>
+                </pre>
             </Card>
-            
-            {/* CLI Publisher Tool */}
-            <Card className="p-6 bg-muted border border-border/50">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-cli-publisher-title">
-                    CLI Publisher Tool
-                  </h4>
+            </TabsContent>
+
+            <TabsContent value="register" className="mt-4 sm:mt-6">
+              <Card className="bg-card border border-border shadow-sm p-0 overflow-hidden">
+                <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border">
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1">
+                      <Terminal className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full animate-pulse delay-100"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse delay-200"></div>
+                    </div>
+                  </div>
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry/tree/main/tools/a2a-publisher', 'Publisher Tool')}
-                    data-testid="button-view-publisher"
+                    onClick={() => handleCopyCode(codeExamples.register, "register")}
+                    className="text-muted-foreground hover:text-foreground h-8 w-8 p-0 transition-all duration-200 hover:scale-110"
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    {copiedCode === "register" ? (
+                      <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 animate-in zoom-in-50 duration-200" />
+                    ) : (
+                      <Copy className="w-3 h-3 sm:w-4 sm:h-4 hover:text-blue-600 dark:hover:text-primary transition-colors duration-200" />
+                    )}
                   </Button>
                 </div>
+                <pre className="p-3 sm:p-4 md:p-6 text-xs sm:text-sm font-mono text-foreground overflow-x-auto">
+                  <code className="text-foreground">
+                    <span className="text-blue-600 dark:text-blue-400"># Advanced Agent Registration</span>
+                    <br />
+                    <span className="text-purple-600 dark:text-purple-400">from</span> <span className="text-orange-600 dark:text-orange-400">a2a_reg_sdk</span> <span className="text-purple-600 dark:text-purple-400">import</span> <span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">A2AClient</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-orange-600 dark:text-orange-400">Agent</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-orange-600 dark:text-orange-400">AgentCard</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-orange-600 dark:text-orange-400">AgentCapabilities</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">AuthScheme</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-orange-600 dark:text-orange-400">AgentPublisher</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Initialize registry client</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">client</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">A2AClient</span><span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">registry_url</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"https://registry.a2areg.com"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">client_id</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"your-client-id"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">client_secret</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"your-client-secret"</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Create agent card</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">agent_card</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">AgentCard</span><span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">name</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"My AI Assistant"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">description</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"An intelligent assistant for natural language processing"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">version</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"1.0.0"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">author</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"Your Organization"</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Create agent with capabilities</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">agent</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">Agent</span><span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">name</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"my-ai-assistant"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">description</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"Intelligent NLP assistant"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">version</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"1.0.0"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">provider</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"Your Organization"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">location_url</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"https://api.example.com/agent"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">agent_card</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-orange-600 dark:text-orange-400">agent_card</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Create publisher and publish agent</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">publisher</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">AgentPublisher</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-orange-600 dark:text-orange-400">client</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">result</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">publisher</span><span className="text-yellow-600 dark:text-yellow-400">.</span><span className="text-orange-600 dark:text-orange-400">publish</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-orange-600 dark:text-orange-400">agent</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"Agent published successfully!"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"Agent ID: {'{'}result.get('agent_id', 'N/A'){'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"Registry URL: {'{'}result.get('registry_url', 'N/A'){'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                  </code>
+                </pre>
+            </Card>
+            </TabsContent>
+
+            <TabsContent value="search" className="mt-4 sm:mt-6">
+              <Card className="bg-card border border-border shadow-sm p-0 overflow-hidden">
+                <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border">
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1">
+                      <Terminal className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full animate-pulse delay-100"></div>
+                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse delay-200"></div>
+                    </div>
+                  </div>
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  onClick={() => copyToClipboard(codeExamples.publisher, 'CLI Publisher')}
-                  data-testid="button-copy-publisher"
-                >
-                  <Copy className="h-4 w-4" />
+                    onClick={() => handleCopyCode(codeExamples.search, "search")}
+                    className="text-muted-foreground hover:text-foreground h-8 w-8 p-0 transition-all duration-200 hover:scale-110"
+                  >
+                    {copiedCode === "search" ? (
+                      <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 animate-in zoom-in-50 duration-200" />
+                    ) : (
+                      <Copy className="w-3 h-3 sm:w-4 sm:h-4 hover:text-blue-600 dark:hover:text-primary transition-colors duration-200" />
+                    )}
                 </Button>
               </div>
-              <div className="max-h-48 overflow-y-auto rounded-lg">
-                <SyntaxHighlighter 
-                  language="bash"
-                  style={isDark ? oneDark : oneLight}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  {codeExamples.publisher}
-                </SyntaxHighlighter>
-              </div>
+                <pre className="p-3 sm:p-4 md:p-6 text-xs sm:text-sm font-mono text-foreground overflow-x-auto">
+                  <code className="text-foreground">
+                    <span className="text-blue-600 dark:text-blue-400"># Advanced Agent Discovery</span>
+                    <br />
+                    <span className="text-purple-600 dark:text-purple-400">from</span> <span className="text-orange-600 dark:text-orange-400">a2a_reg_sdk</span> <span className="text-purple-600 dark:text-purple-400">import</span> <span className="text-orange-600 dark:text-orange-400">A2AClient</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Initialize client</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">client</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">A2AClient</span><span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">registry_url</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"https://registry.a2areg.com"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">client_id</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"your-client-id"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">client_secret</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"your-client-secret"</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-blue-600 dark:text-blue-400"># Search for agents with filters</span>
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">agents</span> <span className="text-yellow-600 dark:text-yellow-400">=</span> <span className="text-orange-600 dark:text-orange-400">client</span><span className="text-yellow-600 dark:text-yellow-400">.</span><span className="text-orange-600 dark:text-orange-400">search_agents</span><span className="text-yellow-600 dark:text-yellow-400">(</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">query</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"AI assistant"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">capabilities</span><span className="text-yellow-600 dark:text-yellow-400">=[</span><span className="text-green-600 dark:text-green-400">"text-generation"</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-green-600 dark:text-green-400">"question-answering"</span><span className="text-yellow-600 dark:text-yellow-400">],</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">tags</span><span className="text-yellow-600 dark:text-yellow-400">=[</span><span className="text-green-600 dark:text-green-400">"nlp"</span><span className="text-yellow-600 dark:text-yellow-400">,</span> <span className="text-green-600 dark:text-green-400">"enterprise"</span><span className="text-yellow-600 dark:text-yellow-400">],</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">version_min</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-green-600 dark:text-green-400">"1.0.0"</span><span className="text-yellow-600 dark:text-yellow-400">,</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">limit</span><span className="text-yellow-600 dark:text-yellow-400">=</span><span className="text-purple-600 dark:text-purple-400">10</span>
+                    <br />
+                    <span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <br />
+                    <span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"Found {'{'}len(agents){'}'} agents:"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    <span className="text-purple-600 dark:text-purple-400">for</span> <span className="text-orange-600 dark:text-orange-400">agent</span> <span className="text-purple-600 dark:text-purple-400">in</span> <span className="text-orange-600 dark:text-orange-400">agents</span><span className="text-yellow-600 dark:text-yellow-400">:</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"- {'{'}agent.name{'}'} v{'{'}agent.version{'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"  Provider: {'{'}agent.provider{'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"  Description: {'{'}agent.description{'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-green-600 dark:text-green-400">f"  Location: {'{'}agent.location_url{'}'}"</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                    <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-orange-600 dark:text-orange-400">print</span><span className="text-yellow-600 dark:text-yellow-400">(</span><span className="text-yellow-600 dark:text-yellow-400">)</span>
+                  </code>
+                </pre>
             </Card>
-            
-            {/* Search Agents */}
-            <Card className="p-6 bg-muted border border-border/50">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-lg font-semibold text-card-foreground" data-testid="text-search-agents-title">
-                  Search Agents
-                </h4>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => copyToClipboard(codeExamples.search, 'Search agents')}
-                  data-testid="button-copy-search"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-              </div>
-              <SyntaxHighlighter 
-                language="python"
-                style={isDark ? oneDark : oneLight}
-                customStyle={{
-                  margin: 0,
-                  borderRadius: '0.5rem',
-                  fontSize: '0.875rem',
-                }}
-              >
-                {codeExamples.search}
-              </SyntaxHighlighter>
-            </Card>
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
-      
-      {/* Bottom separator */}
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
     </section>
   );
 }

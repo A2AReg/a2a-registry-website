@@ -28,6 +28,7 @@ const navigationItems = [
   { id: "configuration", label: "Configuration", icon: Settings },
   { id: "publishing", label: "Publishing Agents", icon: Play },
   { id: "python-sdk", label: "Python SDK", icon: Code },
+  { id: "examples", label: "Examples", icon: Code },
   { id: "api-reference", label: "API Reference", icon: Code },
   { id: "security", label: "Security", icon: Shield },
   { id: "troubleshooting", label: "Troubleshooting", icon: Zap }
@@ -35,196 +36,145 @@ const navigationItems = [
 
 const codeExamples = {
   installation: `pip install a2a-reg-sdk`,
-  basicPublish: `a2a-reg publish ./a2a-card.json`,
-  sdkInstallation: `pip install a2a-reg-sdk`,
-  sdkBasicUsage: `from a2a_reg_sdk import A2ARegistry, AgentCard
+  basicPublish: `from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
-# Initialize the registry client
-registry = A2ARegistry(
-    api_key="your-api-key-here",
-    base_url="https://registry.a2areg.com"
-)
+# Initialize the client
+client = A2AClient(api_key='your_api_key')
 
-# Create an agent card
-agent = AgentCard(
-    name="my-intelligent-agent",
-    version="1.0.0",
-    description="A powerful AI agent for text processing",
-    author="Your Name <you@example.com>",
-    tags=["nlp", "text-processing", "ai"],
-    framework="langchain",
-    runtime="python",
-    entry_point="src/main.py"
-)
+# Create capabilities using builder
+capabilities_builder = AgentCapabilitiesBuilder()
+capabilities = capabilities_builder.protocols(['http']).supported_formats(['json']).build()
+
+# Create agent using builder
+agent_builder = AgentBuilder('Sample Agent', 'A sample agent for demonstration purposes', '1.0.0', 'Your Organization')
+new_agent = agent_builder.with_capabilities(capabilities).with_location('https://example.com/agent').build()
 
 # Publish the agent
-try:
-    result = registry.publish(agent)
-    print(f"Agent published successfully: {result.agent_id}")
-except Exception as e:
-    print(f"Publication failed: {e}")`,
-  sdkAdvanced: `from a2a_reg_sdk import A2ARegistry, AgentCard, Dependency
+response = client.publish_agent(new_agent)
 
-# Advanced agent configuration
-agent = AgentCard(
-    name="advanced-nlp-agent",
-    version="2.1.0",
-    description="Advanced NLP agent with multi-model support",
-    author="AI Team <ai-team@company.com>",
-    tags=["nlp", "transformers", "enterprise", "production"],
-    framework="transformers",
-    runtime="python",
-    entry_point="src/agent.py",
-    dependencies=[
-        Dependency("transformers", "^4.20.0"),
-        Dependency("torch", "^2.0.0"),
-        Dependency("numpy", "^1.21.0")
-    ],
-    capabilities=[
-        "text-generation",
-        "sentiment-analysis", 
-        "named-entity-recognition",
-        "text-classification"
-    ],
-    resources={
-        "memory": "2Gi",
-        "cpu": "1000m",
-        "gpu": "1"
-    },
-    environment_variables={
-        "MODEL_PATH": "/models/bert-base-uncased",
-        "MAX_SEQUENCE_LENGTH": "512"
-    }
-)
+if response.success:
+    print('Agent published successfully!')
+else:
+    print(f'Failed to publish agent: {response.error}')`,
+  sdkInstallation: `pip install a2a-reg-sdk`,
+  sdkBasicUsage: `from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
-# Initialize registry with custom configuration
-registry = A2ARegistry(
-    api_key="your-api-key",
-    base_url="https://registry.a2areg.com",
-    timeout=30,
-    retry_attempts=3
-)
+# Initialize the client
+client = A2AClient(api_key='your_api_key')
 
-# Publish with metadata
-result = registry.publish(
-    agent,
-    private=False,
-    license="MIT",
-    documentation_url="https://docs.example.com/agent"
-)
+# Create capabilities using builder
+capabilities_builder = AgentCapabilitiesBuilder()
+capabilities = capabilities_builder.protocols(['http']).supported_formats(['json']).build()
 
-print(f"Published agent: {result.agent_id}")
-print(f"Registry URL: {result.registry_url}")`,
-  sdkQuery: `from a2a_reg_sdk import A2ARegistry
+# Create agent using builder
+agent_builder = AgentBuilder('Sample Agent', 'A sample agent for demonstration purposes', '1.0.0', 'Your Organization')
+new_agent = agent_builder.with_capabilities(capabilities).with_location('https://example.com/agent').build()
 
-registry = A2ARegistry(api_key="your-api-key")
+# Publish the agent
+response = client.publish_agent(new_agent)
 
-# Search for agents
-agents = registry.search(
-    query="text processing",
-    tags=["nlp", "ai"],
-    framework="langchain",
-    limit=10
-)
+if response.success:
+    print('Agent published successfully!')
+else:
+    print(f'Failed to publish agent: {response.error}')`,
+  sdkAdvanced: `from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
+# Initialize the client
+client = A2AClient(api_key='your_api_key')
+
+# Create advanced capabilities using builder
+capabilities_builder = AgentCapabilitiesBuilder()
+capabilities = capabilities_builder.protocols(['http', 'websocket']).supported_formats(['json', 'text']).max_concurrent_requests(10).build()
+
+# Create advanced agent using builder
+agent_builder = AgentBuilder('Advanced NLP Agent', 'An advanced NLP agent with multi-model support', '2.1.0', 'AI Team')
+advanced_agent = agent_builder.with_capabilities(capabilities).with_location('https://api.company.com/nlp-agent').public(True).active(True).build()
+
+# Publish the advanced agent
+response = client.publish_agent(advanced_agent)
+
+if response.success:
+    print('Advanced agent published successfully!')
+    print(f'Agent ID: {response.agent_id}')
+else:
+    print(f'Failed to publish agent: {response.error}')`,
+  sdkQuery: `from a2a_reg_sdk import A2AClient
+
+# Initialize the client
+client = A2AClient(api_key='your_api_key')
+
+# Retrieve a list of registered agents
+agents = client.get_agents()
+
+# Display agent information
 for agent in agents:
-    print(f"Agent: {agent.name} v{agent.version}")
+    print(f"Agent Name: {agent.name}")
     print(f"Description: {agent.description}")
-    print(f"Tags: {', '.join(agent.tags)}")
-    print("---")
+    print(f"URL: {agent.url}")
+    print()
 
-# Get specific agent details
-agent_details = registry.get_agent("agent-id-here")
-print(f"Agent capabilities: {agent_details.capabilities}")
+# Retrieve agent details by name
+agent_name = 'Sample Agent'
+agent = client.get_agent_by_name(agent_name)
 
-# Download agent
-registry.download_agent("agent-id-here", "./downloaded-agent/")`,
+if agent:
+    print(f"Agent Name: {agent.name}")
+    print(f"Description: {agent.description}")
+    print(f"URL: {agent.url}")
+    print(f"Version: {agent.version}")
+    print(f"Capabilities: {', '.join(agent.capabilities)}")
+    print(f"Provider: {agent.provider}")
+else:
+    print(f"Agent '{agent_name}' not found.")`,
   githubBasicUsage: `#!/usr/bin/env python3
 """
 Basic A2A SDK Usage Example
 This example demonstrates basic usage of the A2A Python SDK for:
 - Connecting to the registry
 - Publishing an agent
-- Searching for agents
-- Updating and deleting agents
+- Retrieving agent information
 """
 import os
-from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilities, AuthScheme
+from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
 def main():
     # Initialize the client
-    client = A2AClient(
-        registry_url="http://localhost:8000",
-        client_id=os.getenv("A2A_CLIENT_ID"),
-        client_secret=os.getenv("A2A_CLIENT_SECRET"),
-    )
+    client = A2AClient(api_key=os.getenv('A2A_API_KEY'))
 
-    # Authenticate (required for publishing)
-    try:
-        client.authenticate()
-        print("✓ Authentication successful")
-    except Exception as e:
-        print(f"✗ Authentication failed: {e}")
-        return
+    print("✓ Client initialized successfully")
 
-    # Create a simple agent
-    capabilities = AgentCapabilities(
-        protocols=["http"], 
-        supported_formats=["json"], 
-        max_concurrent_requests=5
-    )
+    # Create capabilities using builder
+    capabilities_builder = AgentCapabilitiesBuilder()
+    capabilities = capabilities_builder.protocols(['http']).supported_formats(['json']).build()
 
-    auth_scheme = AuthScheme(
-        type="api_key",
-        description="Simple API key authentication",
-        required=True,
-        header_name="X-API-Key",
-    )
-
-    agent = (
-        AgentBuilder("my-test-agent", "A test agent for demonstration", "1.0.0", "my-org")
-        .with_tags(["test", "demo", "ai"])
-        .with_location("https://my-org.com/api/agent")
-        .with_capabilities(capabilities)
-        .with_auth_schemes([auth_scheme])
-        .public(True)
-        .active(True)
-        .build()
-    )
+    # Create agent using builder
+    agent_builder = AgentBuilder('Sample Agent', 'A sample agent for demonstration purposes', '1.0.0', 'Your Organization')
+    new_agent = agent_builder.with_capabilities(capabilities).with_location('https://example.com/agent').build()
 
     try:
         # Publish the agent
-        published_agent = client.publish_agent(agent)
-        print(f"✓ Agent published successfully with ID: {published_agent.id}")
+        response = client.publish_agent(new_agent)
+        
+        if response.success:
+            print('✓ Agent published successfully!')
+        else:
+            print(f'✗ Failed to publish agent: {response.error}')
+            return
 
-        # List public agents
-        agents_response = client.list_agents(page=1, limit=10)
-        print(f"✓ Found {len(agents_response.get('agents', []))} public agents")
+        # Retrieve a list of registered agents
+        agents = client.get_agents()
+        print(f"✓ Found {len(agents)} registered agents")
 
-        # Search for agents
-        search_results = client.search_agents(
-            query="test", filters={"tags": ["demo"]}, page=1, limit=5
-        )
-        print(f"✓ Search found {len(search_results.get('agents', []))} matching agents")
+        # Display agent information
+        for agent in agents:
+            print(f"  - {agent.name}: {agent.description}")
 
-        # Get agent details
-        agent_details = client.get_agent(published_agent.id)
-        print(f"✓ Retrieved agent details: {agent_details.name}")
-
-        # Update the agent
-        agent_details.description = "Updated description for my test agent"
-        updated_agent = client.update_agent(published_agent.id, agent_details)
-        print(f"✓ Agent updated successfully")
-
-        # Clean up - delete the agent
-        client.delete_agent(published_agent.id)
-        print(f"✓ Agent deleted successfully")
+        print("✓ All operations completed successfully")
 
     except Exception as e:
         print(f"✗ Operation failed: {e}")
-    finally:
-        # Close the client
-        client.close()
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()`,
@@ -232,298 +182,171 @@ if __name__ == "__main__":
 """
 Advanced A2A Agent Example
 This example demonstrates creating a sophisticated agent with:
-- Complex capabilities and skills
-- Multiple authentication schemes  
-- TEE (Trusted Execution Environment) details
-- Comprehensive agent card metadata
+- Complex capabilities and comprehensive metadata
+- Advanced agent management operations
 """
 import os
-from a2a_reg_sdk import (
-    A2AClient,
-    AgentBuilder,
-    AgentCapabilities,
-    AuthScheme,
-    AgentTeeDetails,
-    AgentSkills,
-    AgentCard,
-)
+from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
 def create_advanced_agent():
     """Create an advanced agent with comprehensive configuration."""
     
-    # Define sophisticated capabilities
-    capabilities = AgentCapabilities(
-        protocols=["http", "websocket", "grpc"],
-        supported_formats=["json", "xml", "protobuf", "msgpack"],
-        max_request_size=10485760,  # 10MB
-        max_concurrent_requests=50,
-        a2a_version="1.0",
-    )
+    # Create advanced capabilities using builder
+    capabilities_builder = AgentCapabilitiesBuilder()
+    capabilities = capabilities_builder.protocols(['http', 'websocket']).supported_formats(['json', 'text']).max_concurrent_requests(10).build()
 
-    # Define multiple authentication schemes
-    auth_schemes = [
-        AuthScheme(
-            type="api_key",
-            description="API key for basic authentication",
-            required=True,
-            header_name="X-API-Key",
-        ),
-        AuthScheme(
-            type="oauth2",
-            description="OAuth 2.0 for advanced authentication", 
-            required=False,
-        ),
-        AuthScheme(
-            type="jwt",
-            description="JWT tokens for stateless authentication",
-            required=False,
-            header_name="Authorization",
-        ),
-    ]
+    # Create advanced agent using builder
+    agent_builder = AgentBuilder('Advanced AI Assistant', 'An advanced AI assistant with multi-modal capabilities and comprehensive API support', '2.1.0', 'Advanced AI Corp')
+    advanced_agent = agent_builder.with_capabilities(capabilities).with_location('https://api.advanced-ai.com/v2/agent').public(True).active(True).build()
 
-    # Define TEE details for secure execution
-    tee_details = AgentTeeDetails(
-        enabled=True,
-        provider="Intel SGX",
-        attestation="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
-    )
-
-    # Define agent skills with detailed schemas
-    skills = AgentSkills(
-        input_schema={
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Natural language query or command",
-                },
-                "context": {
-                    "type": "object", 
-                    "properties": {
-                        "user_id": {"type": "string"},
-                        "session_id": {"type": "string"},
-                        "preferences": {"type": "object"},
-                    },
-                },
-                "options": {
-                    "type": "object",
-                    "properties": {
-                        "max_tokens": {"type": "integer", "minimum": 1, "maximum": 4096},
-                        "temperature": {"type": "number", "minimum": 0.0, "maximum": 2.0},
-                        "top_p": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-                    },
-                },
-            },
-            "required": ["query"],
-        },
-        output_schema={
-            "type": "object",
-            "properties": {
-                "response": {"type": "string", "description": "Generated response"},
-                "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-                "metadata": {
-                    "type": "object",
-                    "properties": {
-                        "tokens_used": {"type": "integer"},
-                        "processing_time_ms": {"type": "integer"},
-                        "model_version": {"type": "string"},
-                    },
-                },
-                "alternatives": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Alternative responses",
-                },
-            },
-            "required": ["response", "confidence"],
-        },
-        examples=[
-            "Query: 'Explain quantum computing' -> Response: 'Quantum computing is...', Confidence: 0.92",
-            "Query: 'Translate hello to French' -> Response: 'Bonjour', Confidence: 0.98", 
-            "Query: 'Summarize this document' -> Response: 'The document discusses...', Confidence: 0.85",
-        ],
-    )
-
-    # Build the complete agent
-    agent = (
-        AgentBuilder(
-            name="advanced-ai-assistant",
-            description="An advanced AI assistant with multi-modal capabilities, secure TEE execution, and comprehensive API support",
-            version="2.1.0", 
-            provider="advanced-ai-corp",
-        )
-        .with_tags([
-            "ai", "assistant", "nlp", "multimodal", "secure", 
-            "enterprise", "conversation", "completion", "embedding", "tee",
-        ])
-        .with_location("https://api.advanced-ai.com/v2/agent", "api_endpoint")
-        .with_capabilities(capabilities)
-        .with_auth_schemes(auth_schemes)
-        .with_tee_details(tee_details)
-        .with_skills(skills)
-        .public(True)
-        .active(True)
-        .build()
-    )
-
-    return agent
+    return advanced_agent
 
 def main():
     # Initialize client
-    client = A2AClient(
-        registry_url="http://localhost:8000",
-        client_id=os.getenv("A2A_CLIENT_ID"),
-        client_secret=os.getenv("A2A_CLIENT_SECRET"),
-    )
+    client = A2AClient(api_key=os.getenv('A2A_API_KEY'))
 
     try:
-        # Authenticate
-        client.authenticate()
-        print("✓ Authentication successful")
+        print("✓ Client initialized successfully")
 
         # Create advanced agent
         advanced_agent = create_advanced_agent()
         print(f"✓ Created advanced agent: {advanced_agent.name}")
-        print(f"  - Tags: {', '.join(advanced_agent.tags)}")
-        print(f"  - Protocols: {', '.join(advanced_agent.capabilities.protocols)}")
-        print(f"  - Auth schemes: {len(advanced_agent.auth_schemes)}")
-        print(f"  - TEE enabled: {advanced_agent.tee_details.enabled}")
+        print(f"  - Version: {advanced_agent.version}")
+        print(f"  - Provider: {advanced_agent.provider}")
+        print(f"  - Capabilities: {', '.join(advanced_agent.capabilities)}")
 
         # Publish the agent
-        published_agent = client.publish_agent(advanced_agent)
-        print(f"✓ Advanced agent published with ID: {published_agent.id}")
+        response = client.publish_agent(advanced_agent)
+        
+        if response.success:
+            print('✓ Advanced agent published successfully!')
+            print(f'  - Agent ID: {response.agent_id}')
+        else:
+            print(f'✗ Failed to publish agent: {response.error}')
+            return
 
-        # Search for advanced features
-        search_results = client.search_agents(
-            query="advanced AI TEE secure",
-            filters={
-                "tags": ["enterprise", "secure"],
-                "capabilities.protocols": ["grpc"],
-            },
-            semantic=True,
-        )
-        print(f"✓ Semantic search found {len(search_results.get('agents', []))} matching agents")
+        # Retrieve agent details by name
+        agent = client.get_agent_by_name('Advanced AI Assistant')
+        if agent:
+            print(f"✓ Retrieved agent details: {agent.name}")
+            print(f"  - URL: {agent.url}")
+            print(f"  - Version: {agent.version}")
+            print(f"  - Capabilities: {', '.join(agent.capabilities)}")
 
-        # Clean up
-        client.delete_agent(published_agent.id)
-        print("✓ Advanced agent deleted")
+        print("✓ All operations completed successfully")
 
     except Exception as e:
         print(f"✗ Operation failed: {e}")
         import traceback
         traceback.print_exc()
-    finally:
-        client.close()
 
 if __name__ == "__main__":
     main()`,
   githubPublisherExample: `#!/usr/bin/env python3
 """
-A2A Agent Publisher Example
-This example demonstrates using the high-level AgentPublisher class for:
-- Creating sample agent configurations
-- Loading agents from configuration files  
-- Publishing and managing agents with validation
+A2A Agent Management Example
+This example demonstrates comprehensive agent management operations:
+- Publishing multiple agents
+- Retrieving and managing agent information
+- Working with different agent types
 """
 import os
-from pathlib import Path
-from a2a_reg_sdk import A2AClient, AgentPublisher
+from a2a_reg_sdk import A2AClient, AgentBuilder, AgentCapabilitiesBuilder
 
 def main():
-    # Create client and publisher
-    client = A2AClient(
-        registry_url="http://localhost:8000",
-        client_id=os.getenv("A2A_CLIENT_ID"),
-        client_secret=os.getenv("A2A_CLIENT_SECRET"),
-    )
+    # Create client
+    client = A2AClient(api_key=os.getenv('A2A_API_KEY'))
+
+    print("✓ Client initialized successfully")
 
     try:
-        client.authenticate()
-        print("✓ Authentication successful")
-    except Exception as e:
-        print(f"✗ Authentication failed: {e}")
-        return
+        # Create capabilities using builder
+        capabilities_builder = AgentCapabilitiesBuilder()
+        capabilities = capabilities_builder.protocols(['http']).supported_formats(['json']).build()
 
-    publisher = AgentPublisher(client)
+        # Create a chatbot agent using builder
+        chatbot_builder = AgentBuilder('Sample Chatbot', 'A sample AI chatbot agent', '1.0.0', 'Demo Corp')
+        chatbot_agent = chatbot_builder.with_capabilities(capabilities).with_location('https://example.com/chatbot').build()
 
-    # Create a sample agent configuration
-    sample_agent = publisher.create_sample_agent(
-        name="sample-chatbot",
-        description="A sample AI chatbot agent",
-        version="1.2.0",
-        provider="demo-corp", 
-        api_url="https://demo-corp.com/api",
-    )
-    print(f"✓ Created sample agent: {sample_agent.name}")
-
-    # Save the configuration to a file
-    config_path = Path("sample_agent.yaml")
-    publisher.save_agent_config(sample_agent, config_path, format="yaml")
-    print(f"✓ Saved agent configuration to {config_path}")
-
-    try:
-        # Validate the agent
-        validation_errors = publisher.validate_agent(sample_agent)
-        if validation_errors:
-            print(f"✗ Validation errors: {validation_errors}")
-            return
+        # Publish the chatbot agent
+        response1 = client.publish_agent(chatbot_agent)
+        if response1.success:
+            print('✓ Chatbot agent published successfully!')
         else:
-            print("✓ Agent configuration is valid")
+            print(f'✗ Failed to publish chatbot: {response1.error}')
 
-        # Publish the agent
-        published_agent = publisher.publish(sample_agent, validate=True)
-        print(f"✓ Agent published with ID: {published_agent.id}")
+        # Create a data processing agent using builder
+        data_builder = AgentBuilder('Sample Data Processor', 'A sample data processing agent', '1.0.0', 'Demo Corp')
+        data_agent = data_builder.with_capabilities(capabilities).with_location('https://example.com/data-processor').build()
 
-        # Load and publish from file
-        loaded_agent = publisher.load_agent_from_file(config_path)
-        loaded_agent.name = "sample-chatbot-from-file"  # Change name to avoid conflict
-        published_from_file = publisher.publish(loaded_agent, validate=True)
-        print(f"✓ Agent from file published with ID: {published_from_file.id}")
+        # Publish the data processing agent
+        response2 = client.publish_agent(data_agent)
+        if response2.success:
+            print('✓ Data processor agent published successfully!')
+        else:
+            print(f'✗ Failed to publish data processor: {response2.error}')
 
-        # Update the agent
-        published_agent.description = "Updated sample AI chatbot with new features"
-        updated_agent = publisher.update(
-            published_agent.id, published_agent, validate=True
-        )
-        print(f"✓ Agent updated successfully")
+        # Retrieve all agents
+        agents = client.get_agents()
+        print(f"✓ Found {len(agents)} total agents in registry")
 
-        # Clean up
-        client.delete_agent(published_agent.id)
-        client.delete_agent(published_from_file.id)
-        print("✓ Cleanup completed")
+        # Display all agents
+        for agent in agents:
+            print(f"  - {agent.name} ({agent.version}): {agent.description}")
+
+        print("✓ All agent management operations completed successfully")
 
     except Exception as e:
         print(f"✗ Operation failed: {e}")
-    finally:
-        # Clean up the config file
-        if config_path.exists():
-            config_path.unlink()
-        client.close()
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()`,
   a2aCard: `{
-  "name": "my-ai-agent",
-  "version": "1.0.0",
-  "description": "An intelligent assistant agent",
-  "author": "Your Name <your.email@example.com>",
-  "tags": ["nlp", "assistant", "enterprise"],
-  "framework": "langchain",
-  "runtime": "python",
-  "entry_point": "src/agent.py",
-  "dependencies": {
-    "langchain": "^0.1.0",
-    "openai": "^1.0.0"
+  "schemaVersion": "1.0",
+  "humanReadableId": "my-ai-assistant",
+  "agentVersion": "1.0.0",
+  "name": "My AI Assistant",
+  "description": "An intelligent assistant agent for natural language processing",
+  "url": "https://api.example.com/agent",
+  "provider": {
+    "name": "Your Organization",
+    "contact": "contact@example.com",
+    "website": "https://example.com"
   },
-  "capabilities": [
+  "capabilities": {
+    "extensions": [
+      {
+        "uri": "https://example.com/extensions/sample-extension",
+        "required": true,
+        "description": "A sample extension for demonstration purposes.",
+        "params": {
+          "key": "value"
+        }
+      }
+    ],
+    "pushNotifications": true,
+    "streaming": false
+  },
+  "authSchemes": [
+    {
+      "type": "api_key",
+      "description": "API key authentication",
+      "required": true,
+      "headerName": "X-API-Key"
+    }
+  ],
+  "skills": [
     "text-generation",
     "question-answering",
     "summarization"
   ],
-  "resources": {
-    "memory": "512Mi",
-    "cpu": "500m"
-  }
+  "tags": ["nlp", "assistant", "enterprise"],
+  "privacyPolicyUrl": "https://example.com/privacy",
+  "termsOfServiceUrl": "https://example.com/terms",
+  "iconUrl": "https://example.com/icon.png",
+  "lastUpdated": "2024-01-15T10:30:00Z"
 }`,
   pythonAgent: `from langchain.agents import AgentType, initialize_agent
 from langchain.llms import OpenAI
@@ -560,8 +383,8 @@ export default function Docs() {
   const CodeBlock = ({ children, language = "bash", title }: { children: string, language?: string, title?: string }) => (
     <div className="relative">
       {title && (
-        <div className="flex items-center justify-between bg-muted px-4 py-2 border-b">
-          <span className="text-sm font-medium text-foreground">{title}</span>
+        <div className="flex items-center justify-between bg-muted px-3 sm:px-4 py-2 border-b">
+          <span className="text-xs sm:text-sm font-medium text-foreground">{title}</span>
           <Button
             variant="ghost"
             size="sm"
@@ -578,8 +401,11 @@ export default function Docs() {
         customStyle={{
           margin: 0,
           borderRadius: title ? '0 0 0.5rem 0.5rem' : '0.5rem',
-          fontSize: '0.875rem'
+          fontSize: '0.75rem',
+          lineHeight: '1.4',
         }}
+        wrapLongLines={true}
+        wrapLines={true}
       >
         {children}
       </SyntaxHighlighter>
@@ -592,22 +418,22 @@ export default function Docs() {
         return (
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-4">Getting Started</h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">Getting Started</h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">
                 Welcome to the A2A Registry documentation. This tool enables you to publish AI agents to the A2A Registry 
                 for cross-platform discovery and collaboration.
               </p>
             </div>
 
-            <Card className="p-6">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="text-primary p-2 bg-primary/10 rounded-md">
-                    <BookOpen className="h-5 w-5" />
+            <Card className="p-4 sm:p-6">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="text-primary p-2 bg-primary/10 rounded-md flex-shrink-0">
+                    <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">What is A2A Registry?</h3>
-                    <p className="text-muted-foreground mb-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">What is A2A Registry?</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground mb-4">
                       With the rapid growth of AI and agentic applications, enterprises often manage a mix of internally developed agents and externally procured ones, hosted either on-premises or in the cloud. Many business processes span multiple agents, creating the need for a service that can discover, organize, and leverage these agents to complete tasks.
                       
                       Similarly, vendors may offer collections of agents, much like public APIs are published and documented today, requiring a way to present their available agents for customer use. These agents may be openly accessible or gated by entitlements.
@@ -619,56 +445,56 @@ export default function Docs() {
               </div>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="p-6 hover-elevate border border-border/50">
-                <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <Card className="p-4 sm:p-6 hover-elevate border border-border/50">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="text-primary p-2 w-fit rounded-md bg-primary/10">
-                    <Download className="h-5 w-5" />
+                    <Download className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-foreground">1. Install</h3>
-                    <p className="text-sm text-muted-foreground">Install the A2A SDK CLI globally on your system</p>
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">1. Install</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Install the A2A SDK CLI globally on your system</p>
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-6 hover-elevate border border-border/50">
-                <div className="space-y-4">
+              <Card className="p-4 sm:p-6 hover-elevate border border-border/50">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="text-primary p-2 w-fit rounded-md bg-primary/10">
-                    <Settings className="h-5 w-5" />
+                    <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-foreground">2. Configure</h3>
-                    <p className="text-sm text-muted-foreground">Create your A2A Card configuration and metadata</p>
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">2. Configure</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Create your A2A Card configuration and metadata</p>
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-6 hover-elevate border border-border/50">
-                <div className="space-y-4">
+              <Card className="p-4 sm:p-6 hover-elevate border border-border/50 sm:col-span-2 lg:col-span-1">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="text-primary p-2 w-fit rounded-md bg-primary/10">
-                    <Play className="h-5 w-5" />
+                    <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-foreground">3. Publish</h3>
-                    <p className="text-sm text-muted-foreground">Deploy your agent to the A2A Registry</p>
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">3. Publish</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Deploy your agent to the A2A Registry</p>
                   </div>
                 </div>
               </Card>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Quick Start</h2>
-              <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Quick Start</h2>
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">1. Install the A2A Registry SDK</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">1. Install the A2A Registry SDK</h3>
                   <CodeBlock title="Install A2A Publisher" language="bash">
                     {codeExamples.installation}
                   </CodeBlock>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">2. Publish Your First Agent</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">2. Publish Your First Agent</h3>
                   <CodeBlock title="Publish Agent" language="bash">
                     {codeExamples.basicPublish}
                   </CodeBlock>
@@ -682,16 +508,16 @@ export default function Docs() {
         return (
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-4">Installation</h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">Installation</h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">
                 Multiple ways to install and set up the A2A Registry tool on your system.
               </p>
             </div>
 
-            <div className="space-y-6">
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold text-foreground mb-4">pip (Recommended)</h2>
-                <p className="text-muted-foreground mb-4">
+            <div className="space-y-4 sm:space-y-6">
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">pip (Recommended)</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
                   Install globally using pip for easy access from any directory.
                 </p>
                 <CodeBlock title="Install via pip" language="bash">
@@ -699,9 +525,9 @@ export default function Docs() {
                 </CodeBlock>
               </Card>
 
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold text-foreground mb-4">Docker</h2>
-                <p className="text-muted-foreground mb-4">
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Docker</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
                   Use the official Docker image for containerized environments.
                 </p>
                 <CodeBlock title="Run with Docker" language="bash">
@@ -710,9 +536,9 @@ export default function Docs() {
                 </CodeBlock>
               </Card>
 
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold text-foreground mb-4">From Source</h2>
-                <p className="text-muted-foreground mb-4">
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">From Source</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
                   Build and install from the source repository.
                 </p>
                 <CodeBlock title="Install from Source" language="bash">
@@ -723,14 +549,14 @@ pip install -e .`}
               </Card>
             </div>
 
-            <Card className="p-6 bg-primary/5 border-primary/20">
-              <div className="flex items-start space-x-4">
-                <div className="text-primary p-2 bg-primary/10 rounded-md">
-                  <Shield className="h-5 w-5" />
+            <Card className="p-4 sm:p-6 bg-primary/5 border-primary/20">
+              <div className="flex items-start space-x-3 sm:space-x-4">
+                <div className="text-primary p-2 bg-primary/10 rounded-md flex-shrink-0">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">System Requirements</h3>
-                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground mb-2">System Requirements</h3>
+                  <ul className="list-disc list-inside text-xs sm:text-sm text-muted-foreground space-y-1">
                     <li>Python 3.8 or higher</li>
                     <li>pip (Python package installer)</li>
                     <li>Git (for source installation)</li>
@@ -741,12 +567,12 @@ pip install -e .`}
             </Card>
 
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Verification</h2>
-              <p className="text-muted-foreground mb-4">
-                Verify your installation by running the version command:
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Verification</h2>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                Verify your installation by importing the SDK in Python:
               </p>
-              <CodeBlock title="Check Version" language="bash">
-                a2a-publisher --version
+              <CodeBlock title="Check Installation" language="python">
+                python -c "import a2a_reg_sdk; print('SDK version:', a2a_reg_sdk.__version__)"
               </CodeBlock>
             </div>
           </div>
@@ -756,80 +582,147 @@ pip install -e .`}
         return (
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-4">Configuration</h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">Configuration</h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6">
                 Learn how to configure your agents for publishing to the A2A Registry.
               </p>
             </div>
 
-            <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">A2A Card Configuration</h2>
-              <p className="text-muted-foreground mb-4">
-                Create an <code className="bg-muted px-1 rounded">a2a-card.json</code> file in your project root. The A2A Card contains metadata about your agent along with additional configuration:
+            <Card className="p-4 sm:p-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">A2A Card Configuration</h2>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                Create an <code className="bg-muted px-1 rounded text-xs sm:text-sm">a2a-card.json</code> file in your project root. The A2A Card contains metadata about your agent along with additional configuration:
               </p>
               <CodeBlock title="a2a-card.json" language="json">
                 {codeExamples.a2aCard}
               </CodeBlock>
             </Card>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-4">Required Fields</h3>
-                <div className="space-y-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <Card className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">Required Fields</h3>
+                <div className="space-y-2 sm:space-y-3">
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">name</code>
-                    <p className="text-sm text-muted-foreground">Unique identifier for your agent</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">schemaVersion</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Version of the Agent Card schema (e.g., "1.0")</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">version</code>
-                    <p className="text-sm text-muted-foreground">Semantic version (e.g., 1.0.0)</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">humanReadableId</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Unique, user-friendly identifier for the agent</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">description</code>
-                    <p className="text-sm text-muted-foreground">Brief description of agent functionality</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">agentVersion</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Version of the agent software (e.g., "1.0.0")</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">framework</code>
-                    <p className="text-sm text-muted-foreground">AI framework used (langchain, autogen, etc.)</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">name</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Display name of the agent</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">description</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Detailed explanation of agent's purpose and functionality</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">url</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Primary endpoint URL for interacting with the agent</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">provider</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Information about the agent's provider (name, contact, website)</p>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-4">Optional Fields</h3>
-                <div className="space-y-3">
+              <Card className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">Optional Fields</h3>
+                <div className="space-y-2 sm:space-y-3">
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">tags</code>
-                    <p className="text-sm text-muted-foreground">Array of searchable tags</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">capabilities</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Agent's supported extensions, push notifications, and streaming capabilities</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">capabilities</code>
-                    <p className="text-sm text-muted-foreground">List of agent capabilities</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">authSchemes</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">List of supported authentication schemes</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">resources</code>
-                    <p className="text-sm text-muted-foreground">Memory and CPU requirements</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">skills</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Specific skills or capabilities the agent possesses</p>
                   </div>
                   <div>
-                    <code className="bg-muted px-1 rounded text-sm">dependencies</code>
-                    <p className="text-sm text-muted-foreground">Required packages and versions</p>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">tags</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Keywords for categorization and discovery</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">privacyPolicyUrl</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">URL to the agent's privacy policy</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">termsOfServiceUrl</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">URL to the agent's terms of service</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">iconUrl</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">URL to an icon representing the agent</p>
+                  </div>
+                  <div>
+                    <code className="bg-muted px-1 rounded text-xs sm:text-sm">lastUpdated</code>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Timestamp when the Agent Card was last updated</p>
                   </div>
                 </div>
               </Card>
             </div>
 
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Environment Configuration</h2>
-              <p className="text-muted-foreground mb-4">
-                Configure authentication and registry settings:
+              <h2 className="text-2xl font-bold text-foreground mb-4">Schema Validation</h2>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                The Agent Card follows the official A2A Protocol specification from <a href="https://a2a-protocol.org/latest/specification/#552-agentcapabilities-object" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm sm:text-base py-1 px-1 rounded hover:bg-primary/10 transition-colors">a2a-protocol.org</a>. The AgentCapabilities object structure is defined in the official specification. All required fields must be present for successful registration:
               </p>
-              <CodeBlock title="Environment Variables" language="bash">
-{`# Registry configuration
-export A2A_REGISTRY_URL=https://registry.a2areg.com
-export A2A_AUTH_TOKEN=your_auth_token_here
-
-# Optional: Custom registry
-export A2A_REGISTRY_URL=https://custom-registry.company.com`}
+              <CodeBlock title="Schema Validation Example" language="json">
+{`{
+  "schemaVersion": "1.0",
+  "humanReadableId": "my-ai-assistant",
+  "agentVersion": "1.0.0",
+  "name": "My AI Assistant",
+  "description": "An intelligent assistant agent for natural language processing",
+  "url": "https://api.example.com/agent",
+  "provider": {
+    "name": "Your Organization",
+    "contact": "contact@example.com",
+    "website": "https://example.com"
+  },
+  "capabilities": {
+    "extensions": [
+      {
+        "uri": "https://example.com/extensions/sample-extension",
+        "required": true,
+        "description": "A sample extension for demonstration purposes.",
+        "params": {
+          "key": "value"
+        }
+      }
+    ],
+    "pushNotifications": true,
+    "streaming": false
+  },
+  "authSchemes": [
+    {
+      "type": "api_key",
+      "description": "API key authentication",
+      "required": true,
+      "headerName": "X-API-Key"
+    }
+  ],
+  "skills": [
+    "text-generation",
+    "question-answering",
+    "summarization"
+  ],
+  "tags": ["nlp", "assistant", "enterprise"],
+  "privacyPolicyUrl": "https://example.com/privacy",
+  "termsOfServiceUrl": "https://example.com/terms",
+  "iconUrl": "https://example.com/icon.png",
+  "lastUpdated": "2024-01-15T10:30:00Z"
+}`}
               </CodeBlock>
             </Card>
           </div>
@@ -883,7 +776,7 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
 
               <Card className="p-6">
                 <h2 className="text-2xl font-bold text-foreground mb-4">Basic Publishing</h2>
-                <CodeBlock title="Publish Agent" language="bash">
+                <CodeBlock title="Publish Agent with Python SDK" language="python">
                   {codeExamples.basicPublish}
                 </CodeBlock>
               </Card>
@@ -892,26 +785,42 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                 <h2 className="text-2xl font-bold text-foreground mb-4">Advanced Options</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">Dry Run</h3>
-                    <p className="text-muted-foreground mb-2">Validate configuration without publishing:</p>
-                    <CodeBlock title="Validate Only" language="bash">
-                      a2a-reg publish --dry-run ./a2a-card.json
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Validation Before Publishing</h3>
+                    <p className="text-muted-foreground mb-2">Validate agent configuration before publishing:</p>
+                    <CodeBlock title="Publish Agent" language="python">
+{`# Publish agent with error handling
+response = client.publish_agent(agent)
+if response.success:
+    print("Agent published successfully!")
+    print(f"Agent ID: {response.agent_id}")
+else:
+    print(f"Failed to publish agent: {response.error}")`}
                     </CodeBlock>
                   </div>
                   
                   <div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">Custom Registry</h3>
                     <p className="text-muted-foreground mb-2">Publish to a custom registry endpoint:</p>
-                    <CodeBlock title="Custom Registry" language="bash">
-                      a2a-reg publish --registry https://custom.registry.com ./a2a-card.json
+                    <CodeBlock title="Custom Registry" language="python">
+{`# Use custom registry with API key
+client = A2AClient(api_key='your_custom_registry_api_key')`}
                     </CodeBlock>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">Force Update</h3>
-                    <p className="text-muted-foreground mb-2">Overwrite existing agent version:</p>
-                    <CodeBlock title="Force Update" language="bash">
-                      a2a-reg-sdk publish --force ./a2a-card.json
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Sample Agent Creation</h3>
+                    <p className="text-muted-foreground mb-2">Create sample agents for testing:</p>
+                    <CodeBlock title="Create Sample Agent" language="python">
+{`# Create a sample agent for testing using builders
+from a2a_reg_sdk import AgentBuilder, AgentCapabilitiesBuilder
+
+# Create capabilities using builder
+capabilities_builder = AgentCapabilitiesBuilder()
+capabilities = capabilities_builder.protocols(['http']).supported_formats(['json']).build()
+
+# Create agent using builder
+agent_builder = AgentBuilder('My Test Agent', 'A test agent for development', '1.0.0', 'Test Organization')
+sample_agent = agent_builder.with_capabilities(capabilities).with_location('https://example.com/test-agent').build()`}
                     </CodeBlock>
                   </div>
                 </div>
@@ -1055,90 +964,363 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
           </div>
         );
 
+      case "examples":
+        return (
+          <div className="space-y-8">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground mb-4">Examples</h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Official examples from the A2A Registry GitHub repository. These examples are maintained by the A2A Registry team and demonstrate real-world usage patterns.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Official Examples Repository</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                  The A2A Registry team maintains a comprehensive collection of Python examples in the official GitHub repository. These examples are tested, up-to-date, and demonstrate best practices for using the A2A Registry SDK.
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-4">
+                  <Button variant="outline" asChild className="w-full sm:w-auto">
+                    <a 
+                      href="https://github.com/A2AReg/a2a-registry/tree/main/examples/python" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 py-2 px-4"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      <span className="text-sm sm:text-base">View Examples on GitHub</span>
+                    </a>
+                  </Button>
+                </div>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  All examples are available as standalone Python files that you can download and run directly.
+                </p>
+              </Card>
+
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Available Examples</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                  The official examples repository includes:
+                </p>
+                <ul className="list-disc list-inside space-y-1 sm:space-y-2 text-xs sm:text-sm text-muted-foreground mb-4">
+                  <li>Basic agent registration and publishing</li>
+                  <li>Advanced agent configuration with capabilities</li>
+                  <li>Agent management workflows</li>
+                  <li>Registry query and discovery patterns</li>
+                  <li>Authentication and security examples</li>
+                  <li>Error handling and troubleshooting</li>
+                </ul>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Each example includes detailed comments and follows the official A2A Registry SDK patterns and best practices.
+                </p>
+              </Card>
+
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Getting Started</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                  To use the official examples:
+                </p>
+                <ol className="list-decimal list-inside space-y-1 sm:space-y-2 text-xs sm:text-sm text-muted-foreground mb-4">
+                  <li>Clone the A2A Registry repository</li>
+                  <li>Navigate to the examples/python directory</li>
+                  <li>Install the required dependencies</li>
+                  <li>Run the examples to see them in action</li>
+                </ol>
+                <CodeBlock title="Clone Repository" language="bash">
+{`git clone https://github.com/A2AReg/a2a-registry.git
+cd a2a-registry/examples/python
+pip install -r requirements.txt`}
+                </CodeBlock>
+              </Card>
+
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Contributing</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                  The examples are maintained by the A2A Registry team. If you find issues or have suggestions for new examples, please contribute to the official repository.
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <Button variant="outline" asChild className="w-full sm:w-auto">
+                    <a 
+                      href="https://github.com/A2AReg/a2a-registry" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 py-2 px-4"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      <span className="text-sm sm:text-base">Contribute to Repository</span>
+                    </a>
+                  </Button>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
       case "api-reference":
         return (
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-4">API Reference</h1>
               <p className="text-lg text-muted-foreground mb-6">
-                Complete API documentation for programmatic agent publishing and management.
+                Complete Python SDK API documentation for the A2A Registry.
               </p>
             </div>
 
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">REST API Endpoints</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">A2AClient</h2>
+              <p className="text-muted-foreground mb-4">
+                The main client class for interacting with the A2A Registry.
+              </p>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="default" className="font-mono text-xs">POST</Badge>
-                    <code className="text-sm">/api/v1/agents</code>
-                  </div>
-                  <p className="text-muted-foreground mb-2">Publish a new agent to the registry.</p>
-                  <CodeBlock title="Publish Agent via API" language="bash">
-                    {codeExamples.apiPublish}
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Constructor</h3>
+                  <CodeBlock title="A2AClient" language="python">
+{`A2AClient(api_key: str, header_name: str = 'X-API-Key')`}
                   </CodeBlock>
                 </div>
 
                 <Separator />
 
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="secondary" className="font-mono text-xs">GET</Badge>
-                    <code className="text-sm">/api/v1/agents</code>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Agent Management</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">publish_agent(agent_data)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Publish a new agent to the registry</p>
                   </div>
-                  <p className="text-muted-foreground mb-2">List all published agents.</p>
-                  <CodeBlock title="List Agents" language="bash">
-{`curl -H "Authorization: Bearer YOUR_TOKEN" \\
-  https://registry.a2areg.com/api/v1/agents`}
-                  </CodeBlock>
+                    <div>
+                      <code className="text-sm font-mono">get_agent(agent_id)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Get details of a specific agent</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">list_agents(page=1, limit=20, public_only=True)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">List all published agents</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">update_agent(agent_id, agent_data)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Update an existing agent</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">delete_agent(agent_id)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Remove an agent from the registry</p>
+                    </div>
+                  </div>
                 </div>
 
                 <Separator />
 
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="secondary" className="font-mono text-xs">GET</Badge>
-                    <code className="text-sm">/api/v1/agents/:id</code>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Search & Discovery</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">search_agents(query=None, filters=None, semantic=False, page=1, limit=20)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Search for agents with optional filters</p>
                   </div>
-                  <p className="text-muted-foreground mb-2">Get details of a specific agent.</p>
-                  <CodeBlock title="Get Agent Details" language="bash">
-{`curl -H "Authorization: Bearer YOUR_TOKEN" \\
-  https://registry.a2areg.com/api/v1/agents/my-agent-id`}
-                  </CodeBlock>
+                    <div>
+                      <code className="text-sm font-mono">get_agent_card(agent_id)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Get the agent card for a specific agent</p>
+                    </div>
+                  </div>
                 </div>
 
                 <Separator />
 
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="destructive" className="font-mono text-xs">DELETE</Badge>
-                    <code className="text-sm">/api/v1/agents/:id</code>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Authentication & Keys</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">set_api_key(api_key, header_name='X-API-Key')</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set the API key for authentication</p>
                   </div>
-                  <p className="text-muted-foreground mb-2">Remove an agent from the registry.</p>
-                  <CodeBlock title="Delete Agent" language="bash">
-{`curl -X DELETE -H "Authorization: Bearer YOUR_TOKEN" \\
-  https://registry.a2areg.com/api/v1/agents/my-agent-id`}
-                  </CodeBlock>
+                    <div>
+                      <code className="text-sm font-mono">generate_api_key(scopes, expires_days=None)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Generate a new API key</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">list_api_keys(active_only=True)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">List all API keys</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">revoke_api_key(key_id)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Revoke an API key</p>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">System & Health</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">get_health()</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Check registry health status</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">get_stats()</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Get client statistics</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">get_registry_stats()</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Get registry statistics</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>
 
             <Card className="p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Authentication</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">AgentBuilder</h2>
               <p className="text-muted-foreground mb-4">
-                All API requests require authentication using Bearer tokens.
+                Builder class for creating Agent objects with a fluent API.
               </p>
-              <CodeBlock title="Authentication Header" language="bash">
-                Authorization: Bearer YOUR_API_TOKEN
-              </CodeBlock>
               
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold text-foreground mb-2">Getting an API Token</h3>
-                <p className="text-muted-foreground">
-                  Contact your A2A Registry administrator to obtain an API token, or generate one through 
-                  the web interface if you have publisher permissions.
-                </p>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Constructor</h3>
+                  <CodeBlock title="AgentBuilder" language="python">
+{`AgentBuilder(name: str, description: str, version: str, provider: str)`}
+              </CodeBlock>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Configuration Methods</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">with_location(url, location_type='api_endpoint')</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set the agent's location URL</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">with_capabilities(capabilities)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set agent capabilities</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">with_auth_schemes(auth_schemes)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set authentication schemes</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">with_tags(tags)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set agent tags</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">public(is_public=True)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set agent visibility</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">active(is_active=True)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set agent active status</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">build()</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Build and return the Agent object</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <h2 className="text-2xl font-bold text-foreground mb-4">AgentCapabilitiesBuilder</h2>
+              <p className="text-muted-foreground mb-4">
+                Builder class for creating AgentCapabilities objects.
+              </p>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Configuration Methods</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <code className="text-sm font-mono">protocols(protocols)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set supported protocols (e.g., ['http', 'websocket'])</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">supported_formats(formats)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set supported formats (e.g., ['json', 'text'])</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">max_concurrent_requests(count)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set maximum concurrent requests</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">max_request_size(size)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set maximum request size</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">a2a_version(version)</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Set A2A protocol version</p>
+                    </div>
+                    <div>
+                      <code className="text-sm font-mono">build()</code>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Build and return the AgentCapabilities object</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Agent Model</h2>
+              <p className="text-muted-foreground mb-4">
+                The Agent class represents an agent in the registry.
+              </p>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Required Fields</h3>
+                  <div className="space-y-2">
+                    <div><code className="text-sm font-mono">name: str</code> - Agent name</div>
+                    <div><code className="text-sm font-mono">description: str</code> - Agent description</div>
+                    <div><code className="text-sm font-mono">version: str</code> - Agent version</div>
+                    <div><code className="text-sm font-mono">provider: str</code> - Agent provider</div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Optional Fields</h3>
+                  <div className="space-y-2">
+                    <div><code className="text-sm font-mono">id: Optional[str]</code> - Agent ID</div>
+                    <div><code className="text-sm font-mono">tags: List[str]</code> - Agent tags</div>
+                    <div><code className="text-sm font-mono">is_public: bool</code> - Public visibility</div>
+                    <div><code className="text-sm font-mono">is_active: bool</code> - Active status</div>
+                    <div><code className="text-sm font-mono">location_url: Optional[str]</code> - Agent URL</div>
+                    <div><code className="text-sm font-mono">location_type: Optional[str]</code> - Location type</div>
+                    <div><code className="text-sm font-mono">capabilities: Optional[AgentCapabilities]</code> - Agent capabilities</div>
+                    <div><code className="text-sm font-mono">auth_schemes: List[AuthScheme]</code> - Authentication schemes</div>
+                    <div><code className="text-sm font-mono">agent_card: Optional[AgentCard]</code> - Agent card</div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Error Classes</h2>
+              <p className="text-muted-foreground mb-4">
+                Exception classes for error handling.
+              </p>
+              
+              <div className="space-y-3">
+                <div>
+                  <code className="text-sm font-mono">A2AError</code>
+                  <p className="text-sm text-muted-foreground">Base exception class</p>
+                </div>
+                <div>
+                  <code className="text-sm font-mono">AuthenticationError</code>
+                  <p className="text-sm text-muted-foreground">Authentication-related errors</p>
+                </div>
+                <div>
+                  <code className="text-sm font-mono">ValidationError</code>
+                  <p className="text-sm text-muted-foreground">Data validation errors</p>
+                </div>
+                <div>
+                  <code className="text-sm font-mono">NotFoundError</code>
+                  <p className="text-sm text-muted-foreground">Resource not found errors</p>
+                </div>
               </div>
             </Card>
           </div>
@@ -1278,13 +1460,21 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                   <div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">Configuration Validation Error</h3>
                     <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3 mb-2">
-                      <code className="text-sm text-destructive">Error: Invalid configuration. Missing required field 'name'.</code>
+                      <code className="text-sm text-destructive">Error: Agent provider is required</code>
                     </div>
                     <p className="text-muted-foreground mb-2">
-                      <strong>Solution:</strong> Ensure all required fields are present in your configuration file.
+                      <strong>Solution:</strong> Ensure all required fields are present in your Agent and AgentCard objects.
                     </p>
-                    <CodeBlock title="Validate Config" language="bash">
-                      a2a-publisher validate ./agent-config.json
+                    <CodeBlock title="Check Agent Configuration" language="python">
+{`# Check agent configuration before publishing
+try:
+    response = client.publish_agent(agent)
+    if response.success:
+        print("Agent published successfully!")
+    else:
+        print(f"Publishing failed: {response.error}")
+except Exception as e:
+    print(f"Configuration error: {e}")`}
                     </CodeBlock>
                   </div>
 
@@ -1306,47 +1496,48 @@ export A2A_REGISTRY_URL=https://custom-registry.company.com`}
                   <Separator />
 
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">File Size Limit Exceeded</h3>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Import Errors</h3>
                     <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3 mb-2">
-                      <code className="text-sm text-destructive">Error: Agent package exceeds maximum size limit (100MB)</code>
+                      <code className="text-sm text-destructive">ImportError: cannot import name 'A2ARegistry' from 'a2a_reg_sdk'</code>
                     </div>
                     <p className="text-muted-foreground mb-2">
-                      <strong>Solution:</strong> Reduce package size by excluding unnecessary files or using .a2aignore.
+                      <strong>Solution:</strong> Use the correct class names. The SDK uses A2AClient, not A2ARegistry.
                     </p>
-                    <CodeBlock title="Create .a2aignore" language="bash">
-{`# Create ignore file
-echo "node_modules/" >> .a2aignore
-echo "*.log" >> .a2aignore
-echo ".git/" >> .a2aignore`}
+                    <CodeBlock title="Correct Import" language="python">
+{`# Correct import
+from a2a_reg_sdk import A2AClient, Agent
+
+# Initialize client
+client = A2AClient(api_key='your_api_key')`}
                     </CodeBlock>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold text-foreground mb-4">Getting Help</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Getting Help</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-foreground">Community Support</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Community Support</h3>
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start hover-elevate"
-                      onClick={() => window.open('https://discord.gg/a2areg', '_blank')}
+                      className="w-full justify-center sm:justify-start hover-elevate py-3 sm:py-2"
+                      onClick={() => window.open('https://discord.gg/rpe5nMSumw', '_blank')}
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
-                      Join Discord
+                      <span className="text-sm sm:text-base">Join Discord</span>
                     </Button>
                   </div>
                   
                   <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-foreground">Bug Reports</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Bug Reports</h3>
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start hover-elevate"
+                      className="w-full justify-center sm:justify-start hover-elevate py-3 sm:py-2"
                       onClick={() => window.open('https://github.com/A2AReg/a2a-registry/issues', '_blank')}
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
-                      GitHub Issues
+                      <span className="text-sm sm:text-base">GitHub Issues</span>
                     </Button>
                   </div>
                 </div>
@@ -1364,31 +1555,44 @@ echo ".git/" >> .a2aignore`}
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-          {/* Navigation Sidebar */}
-          <div className="lg:col-span-1 order-2 lg:order-1">
-            {/* Mobile: Horizontal scrolling nav */}
-            <div className="lg:hidden mb-6">
-              <ScrollArea className="w-full whitespace-nowrap">
-                <div className="flex space-x-2 p-1">
-                  {navigationItems.map((item) => (
-                    <Button
-                      key={item.id}
-                      variant={activeSection === item.id ? "secondary" : "ghost"}
-                      size="sm"
-                      className="flex-shrink-0 hover-elevate"
-                      onClick={() => setActiveSection(item.id)}
-                      data-testid={`nav-mobile-${item.id}`}
-                    >
-                      <item.icon className="mr-1 h-3 w-3" />
-                      <span className="text-xs">{item.label}</span>
-                    </Button>
-                  ))}
-                </div>
-              </ScrollArea>
+      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {/* Mobile: Horizontal scrolling nav - moved to top */}
+        <div className="lg:hidden mb-4 sm:mb-6">
+          <div className="bg-card border border-border rounded-lg p-2 relative">
+            {/* Left scroll indicator */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gradient-to-r from-card to-transparent w-6 h-full flex items-center justify-start pointer-events-none">
+              <div className="w-2 h-2 border-l border-b border-muted-foreground/30 rotate-45 transform"></div>
             </div>
             
+            {/* Right scroll indicator */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gradient-to-l from-card to-transparent w-6 h-full flex items-center justify-end pointer-events-none">
+              <div className="w-2 h-2 border-r border-b border-muted-foreground/30 -rotate-45 transform"></div>
+            </div>
+            
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex space-x-1 sm:space-x-2 min-w-max">
+                {navigationItems.map((item) => (
+                  <Button
+                    key={item.id}
+                    variant={activeSection === item.id ? "secondary" : "ghost"}
+                    size="sm"
+                    className="flex-shrink-0 hover-elevate text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap min-h-[2.5rem]"
+                    onClick={() => setActiveSection(item.id)}
+                    data-testid={`nav-mobile-${item.id}`}
+                  >
+                    <item.icon className="mr-1 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="hidden sm:inline">{item.label}</span>
+                    <span className="sm:hidden">{item.label.split(' ')[0]}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {/* Navigation Sidebar */}
+          <div className="lg:col-span-1 order-2 lg:order-1">
             {/* Desktop: Sticky sidebar */}
             <Card className="hidden lg:block sticky top-24">
               <div className="p-4 lg:p-6">
@@ -1424,8 +1628,8 @@ echo ".git/" >> .a2aignore`}
 
           {/* Main Content */}
           <div className="lg:col-span-3 order-1 lg:order-2">
-            <Card className="min-h-[80vh]">
-              <div className="p-4 sm:p-6 lg:p-8">
+            <Card className="min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh]">
+              <div className="p-3 sm:p-4 lg:p-6 xl:p-8">
                 {renderContent()}
               </div>
             </Card>

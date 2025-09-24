@@ -68,6 +68,7 @@ export default function Header() {
           <Button 
             variant="ghost" 
             size="sm"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700"
             onClick={() => handleExternalLink('https://discord.gg/rpe5nMSumw', 'Discord')}
             data-testid="button-discord"
           >
@@ -77,6 +78,7 @@ export default function Header() {
           <Button 
             variant="ghost" 
             size="sm"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700"
             onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry', 'GitHub')}
             data-testid="button-github"
           >
@@ -123,7 +125,7 @@ export default function Header() {
                 <div className="border-t pt-6 space-y-4">
                   <Button 
                     variant="ghost" 
-                    className="w-full justify-start"
+                    className="w-full justify-start bg-gray-100 hover:bg-gray-200 text-gray-700"
                     onClick={() => handleExternalLink('https://discord.gg/rpe5nMSumw', 'Discord')}
                     data-testid="button-mobile-discord"
                   >
@@ -132,7 +134,7 @@ export default function Header() {
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="w-full justify-start"
+                    className="w-full justify-start bg-gray-100 hover:bg-gray-200 text-gray-700"
                     onClick={() => handleExternalLink('https://github.com/A2AReg/a2a-registry', 'GitHub')}
                     data-testid="button-mobile-github"
                   >
