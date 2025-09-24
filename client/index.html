@@ -175,6 +175,20 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- PostHog Analytics (CDN) with Session Recording -->
+    <script>
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function c(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}var u=e;u.people=u.people||[];u.toString=function(t){var e="posthog";return"posthog"!==t&&(e+="."+t),e};u.people.toString=function(){return u.toString(1)+".people (stub)"};var l="capture identify alias people.set people.set_once group.identify group.set register register_once unregister set_config reset debug on off".split(" ");for(var g=0;g<l.length;g++)c(u,l[g]);e._i.push([i,s,a])},e.__SV=1,(o=t.createElement("script")).type="text/javascript",o.async=!0,o.src="https://cdn.posthog.com/posthog.js",(n=t.getElementsByTagName("script")[0]).parentNode.insertBefore(o,n)))}(document,window.posthog||[]);
+      // Replace PH_PROJECT_API_KEY with your actual PostHog project API key
+      window.posthog.init('phc_kENEXcXLYPZS9RiUqmnmIF8yPGx4gH09wggjdKrmTCI', {
+        api_host: 'https://us.i.posthog.com',
+        capture_pageview: true,
+        autocapture: true,
+        session_recording: {
+          maskAllInputs: true,
+          captureConsoleLog: false
+        }
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
